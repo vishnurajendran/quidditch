@@ -1,15 +1,22 @@
 using System;
+using Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 
 namespace AgentControllers
 {
+    
     public class AgentUserController : AgentController
     {
-        [SerializeField] private float floorY;
-        [SerializeField] private float ceilY;
-        
         private Camera _camera;
+        [SerializeField] private Transform camTarget;
+
+        private void OnEnable()
+        {
+            GameObject.FindObjectOfType<CinemachineFreeLook>().LookAt = camTarget;
+            GameObject.FindObjectOfType<CinemachineFreeLook>().Follow = camTarget;
+        }
+
         protected override void Start()
         {
             base.Start();
@@ -20,22 +27,19 @@ namespace AgentControllers
         {
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
-            var lift = Input.GetKey(KeyCode.LeftShift) ? 1 : Input.GetKey(KeyCode.LeftControl) ? -1 : 0;
+            float lift = Input.GetKey(KeyCode.LeftShift) ? 1 : Input.GetKey(KeyCode.LeftControl) ? -1 : 0;
             var boost = Input.GetKey(KeyCode.Space);
 
             var forward = _camera.transform.forward;
             var right = _camera.transform.right;
             var up = _camera.transform.up;
-
-            if (horizontal == 0 && vertical == 0)
-                lift = 0;
-            else if (Mathf.Approximately(transform.position.y, floorY) && lift < 0)
-                lift = 0;
-            else if (Mathf.Approximately(transform.position.y, ceilY) && lift > 0)
-                lift = 0;
             
             forward.y = 0;
             right.y = 0;
+
+            var vec = new Vector3(horizontal, 0, vertical);
+            vec = Vector3.ClampMagnitude(vec, 1);
+            lift *= vec.magnitude; 
             
             var dir = forward * vertical + right * horizontal + up * lift;
             

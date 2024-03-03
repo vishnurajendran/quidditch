@@ -9,6 +9,9 @@ namespace Agents
     [RequireComponent(typeof(Rigidbody))]
     public class Agent : MonoBehaviour
     {
+        [SerializeField] private float floorY;
+        [SerializeField] private float ceilY;
+        
         [SerializeField] private Transform _graphicToRoll;
         [SerializeField] private float _graphicToRollLerpMult=3;
         [SerializeField] private float _maxRoll;
@@ -34,6 +37,11 @@ namespace Agents
                 _rb.velocity += -Physics.gravity * Time.fixedDeltaTime;
             
             _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, maxSpeed);
+            if ((_rb.position.y <= floorY && _rb.velocity.y < 0) || (_rb.position.y >= ceilY && _rb.velocity.y > 0))
+            {
+                _rb.velocity = new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
+                _rb.position = new Vector3(_rb.position.x, Mathf.Clamp(_rb.position.y, floorY, ceilY), _rb.position.z);
+            }
         }
 
         private void Update()
