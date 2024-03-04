@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Team1
   - Team2
+  - Ball
   layers:
   - Default
   - TransparentFX
