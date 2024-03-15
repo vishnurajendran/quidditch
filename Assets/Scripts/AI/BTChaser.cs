@@ -8,7 +8,7 @@ public class BTChaser : BaseBT
 {
     protected override BaseNode InitializeBehaviourTree()
     {
-        AgentController _actor = GetComponent<AgentController>();
+        AgentController _actor = GetComponent<NPCController>();
 
         BaseNode root = new SelectorNode(new List<BaseNode>
             {

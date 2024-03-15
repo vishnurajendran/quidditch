@@ -21,6 +21,7 @@ namespace AgentControllers
         {
             base.Start();
             _camera = Camera.main;
+            GetComponent<NPCController>().enabled = false;
         }
 
         private void Update()
