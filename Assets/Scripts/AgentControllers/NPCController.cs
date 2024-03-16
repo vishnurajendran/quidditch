@@ -30,9 +30,14 @@ namespace AgentControllers
         // Update is called once per frame
         void Update()
         {
-            if(!GameManager.Instance.GameStarted)
+            if (!GameManager.Instance.GameStarted)
+            {
+                _agent.Move(Vector3.zero);
+                _agent.SetGraphicRollDirection(0);
+                _agent.Boost(false);
                 return;
-            
+            }
+
             bool boost = false; //todo: boost speed with decision
             float curHorizontal = CalculateHorizontal();
 

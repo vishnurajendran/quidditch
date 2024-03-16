@@ -26,9 +26,14 @@ namespace AgentControllers
 
         private void Update()
         {
-            if(!GameManager.Instance.GameStarted)
+            if (!GameManager.Instance.GameStarted)
+            {
+                _agent.Move(Vector3.zero);
+                _agent.SetGraphicRollDirection(0);
+                _agent.Boost(false);
                 return;
-            
+            }
+
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
             float lift = Input.GetKey(KeyCode.LeftShift) ? 1 : Input.GetKey(KeyCode.LeftControl) ? -1 : 0;
