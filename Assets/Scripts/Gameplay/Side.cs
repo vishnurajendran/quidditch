@@ -77,23 +77,25 @@ namespace Gameplay
                     chasers.Add(player);
             }
 
-            seeker.transform.position = _seekerPosition.position;
-            seeker.transform.rotation = _seekerPosition.rotation;
-            
-            keeper.transform.position = _keeperPosition.position;
-            keeper.transform.rotation = _keeperPosition.rotation;
+            UpdateTransform(seeker, _seekerPosition);
+            UpdateTransform(keeper, _keeperPosition);
 
             for (int i = 0; i < chasers.Count; i++)
             {
-                chasers[i].transform.position = _chaserPositions[i].position;
-                chasers[i].transform.rotation = _chaserPositions[i].rotation;
+                UpdateTransform(chasers[i], _chaserPositions[i]);
             }
             
-            for (int i = 0; i < chasers.Count; i++)
+            for (int i = 0; i < beaters.Count; i++)
             {
-                chasers[i].transform.position = _chaserPositions[i].position;
-                chasers[i].transform.rotation = _chaserPositions[i].rotation;
+                UpdateTransform(beaters[i], _beaterPositions[i]);
             }
+        }
+
+        private void UpdateTransform(Transform ctx, Transform target)
+        {
+            ctx.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            ctx.transform.position = target.position;
+            ctx.transform.rotation = target.rotation;
         }
         
         //Swaps sides.
