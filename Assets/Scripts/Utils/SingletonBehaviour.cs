@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Utils
@@ -5,7 +6,6 @@ namespace Utils
     public class SingletonBehaviour<T> : MonoBehaviour where T : MonoBehaviour
     {
         private static T _instance;
-
         public static T Instance
         {
             get

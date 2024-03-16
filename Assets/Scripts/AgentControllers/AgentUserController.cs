@@ -26,6 +26,9 @@ namespace AgentControllers
 
         private void Update()
         {
+            if(!GameManager.Instance.GameStarted)
+                return;
+            
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
             float lift = Input.GetKey(KeyCode.LeftShift) ? 1 : Input.GetKey(KeyCode.LeftControl) ? -1 : 0;

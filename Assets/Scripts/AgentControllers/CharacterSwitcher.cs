@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Teams;
 using UI;
@@ -23,7 +22,7 @@ namespace AgentControllers
 
         private Transform selected = null;
         
-        private void Start()
+        private void Awake()
         {
             _cameraTrf = Camera.main.transform;
             potentialTargets = new List<Transform>();
@@ -115,17 +114,24 @@ namespace AgentControllers
             return Vector3.Angle(_cameraTrf.forward, pos - transform.position);
         }
         
-        public void SwitchToPlayer(Transform tranform)
+        public void SwitchToPlayer(Transform targetTransform)
         {
-            var other = tranform.GetComponent<CharacterSwitcher>();
+           
+            Debug.Log($"Switching Player to {targetTransform.name}");
+            var other = targetTransform.GetComponent<CharacterSwitcher>();
             other._npController.enabled = false;
             other._userController.enabled = true;
-            
-            _userController.enabled = false;
-            _npController.enabled = true;
-            selected = null;
-            potentialTargets.Clear();
-            GameUI.Instance.SetFollowTarget(null);
+            other.name += " (Human)";
+
+            if (transform != targetTransform)
+            {
+                _userController.enabled = false;
+                _npController.enabled = true;
+                name = name.Replace(" (Human)", "");
+                selected = null;
+                potentialTargets.Clear();
+                GameUI.Instance.SetFollowTarget(null);
+            }
         }
     }
 }

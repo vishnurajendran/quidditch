@@ -30,6 +30,9 @@ namespace AgentControllers
         // Update is called once per frame
         void Update()
         {
+            if(!GameManager.Instance.GameStarted)
+                return;
+            
             bool boost = false; //todo: boost speed with decision
             float curHorizontal = CalculateHorizontal();
 

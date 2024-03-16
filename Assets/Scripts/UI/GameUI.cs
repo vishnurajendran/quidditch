@@ -1,4 +1,8 @@
+using System.Collections;
+using Teams;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Utils;
 
 namespace UI
@@ -7,6 +11,14 @@ namespace UI
     {
         [SerializeField] private GameObject _selector;
         [SerializeField] private Vector3 _followOffset = new Vector3(0,2,0);
+        
+        [FormerlySerializedAs("_coutdownBG")]
+        [Header("Countdown")]
+        [SerializeField] private GameObject _zoomMsgBG;
+        [FormerlySerializedAs("_countdownText")] [SerializeField] private TMP_Text _zoomMsgText;
+        [FormerlySerializedAs("cntMinScale")] [SerializeField] private float zoomMsgMinScale = 0.25f;
+        [FormerlySerializedAs("cntMaxScale")] [SerializeField] private float zoomMsgMaxScale = 3f;
+        
         private Transform _followTarget;
         private Camera _camera;
 
@@ -21,6 +33,11 @@ namespace UI
         {
             _followTarget = target;
             _selector.SetActive(target != null);
+            if (_selector.activeSelf)
+            {
+                _selector.GetComponentInChildren<TMPro.TMP_Text>().text =
+                    target.GetComponent<TeamEntity>().MyPlayerType.ToString();
+            }
         }
         
         private void Update()
@@ -30,6 +47,26 @@ namespace UI
 
             var uiPos = _camera.WorldToScreenPoint(_followTarget.position + _followOffset);
             _selector.transform.position = uiPos;
+        }
+
+        public void ShowZoomingMessage(bool show, string msg, float time)
+        {
+            _zoomMsgBG.SetActive(show);
+            _zoomMsgText.text = msg;
+            StartCoroutine(ZoomMessageRoutine(time));
+        }
+
+        IEnumerator ZoomMessageRoutine(float dur)
+        {
+            float timeStep = 0;
+            float startSize = zoomMsgMinScale;
+            float endSize = zoomMsgMaxScale;
+            while (timeStep <= 1)
+            {
+                timeStep += (Time.deltaTime / dur);
+                _zoomMsgText.transform.localScale = Vector3.one * Mathf.Lerp(startSize, endSize, timeStep);
+                yield return new WaitForEndOfFrame();
+            }
         }
     }
 }
