@@ -35,8 +35,15 @@ namespace UI
             _selector.SetActive(target != null);
             if (_selector.activeSelf)
             {
-                _selector.GetComponentInChildren<TMPro.TMP_Text>().text =
+                if(target.tag == "Team1Target" || target.tag == "Team2Target")
+                {
+                    _selector.GetComponentInChildren<TMPro.TMP_Text>().text = target.tag;
+                }
+                else
+                {
+                    _selector.GetComponentInChildren<TMPro.TMP_Text>().text =
                     target.GetComponent<TeamEntity>().MyPlayerType.ToString();
+                }
             }
         }
         

@@ -15,12 +15,14 @@ namespace AgentControllers
         
         private AgentUserController _userController;
         private NPCController _npController;
-        
+
+        private List<Transform> _myTeamTargets;
         private List<Transform> _myTeamPlayers;
         private List<Transform> potentialTargets;
         private Transform _cameraTrf;
 
-        private Transform selected = null;
+        private int selectedIndex = 0;
+        public Transform selected = null;
         
         private void Awake()
         {
@@ -29,6 +31,12 @@ namespace AgentControllers
             _userController = GetComponent<AgentUserController>();
             _npController = GetComponent<NPCController>();
             _myTeamPlayers = TeamManager.GetPlayersOfTeam(GetComponent<TeamEntity>().MyTeam);
+            _myTeamTargets = TeamManager.GetTargetsOfTeam(GetComponent<TeamEntity>().MyTeam);
+        }
+
+        public List<Transform> GetTeamTargets()
+        {
+            return _myTeamTargets;
         }
 
         private void FixedUpdate()
@@ -63,6 +71,15 @@ namespace AgentControllers
                 }
             }
 
+            //Also add the targets to the potential targets
+            foreach(var target in _myTeamTargets)
+            {
+                if (VisibleToCamera(target))
+                    if (!potentialTargets.Contains(target))
+                        potentialTargets.Add(target);
+            }
+
+            //Debug.Log("The Team Targets:" + _myTeamTargets.Count);
 
             if (potentialTargets.Count <= 0)
             {
@@ -95,8 +112,18 @@ namespace AgentControllers
                 selected = potentialTargets[selectionIndex];
                 GameUI.Instance.SetFollowTarget(selected);
             }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                if(potentialTargets.Count > 0)
+                {
+                    selectedIndex = (selectedIndex + 1) % potentialTargets.Count;
+                    //Debug.Log("click right mouse:" + potentialTargets.Count + " selected num:" + selectedIndex);
+                    selected = potentialTargets[selectedIndex];
+                }
+            }
             
-            if (Input.GetMouseButtonDown(1) && selected)
+            if (Input.GetKeyUp(KeyCode.Q) && selected && selected.GetComponent<TeamEntity>())
             {
                 SwitchToPlayer(selected);
             }
@@ -116,7 +143,6 @@ namespace AgentControllers
         
         public void SwitchToPlayer(Transform targetTransform)
         {
-           
             Debug.Log($"Switching Player to {targetTransform.name}");
             var other = targetTransform.GetComponent<CharacterSwitcher>();
             other._npController.enabled = false;

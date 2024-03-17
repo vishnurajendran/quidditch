@@ -20,7 +20,7 @@ public class GoalDetector : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.name.ToLower().Contains("quaffle"))
+        if (other.gameObject.tag == "Quaffle")
         {
             GameManager.Instance.QuaffleScored(_otherTeam);
         }

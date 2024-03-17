@@ -9,6 +9,10 @@ namespace AgentControllers
     {
         [SerializeField] private float floorY;
         [SerializeField] private float ceilY;
+        [SerializeField] public float throwRadius = 30.0f;
+        [SerializeField] public float attackCircleRadius = 15.0f;
+        [SerializeField] public float guardeCircleRadius = 25.0f;
+
 
         private Vector3 curDirection = Vector3.zero;
 

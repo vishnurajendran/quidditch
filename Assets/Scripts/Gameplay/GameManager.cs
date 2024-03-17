@@ -8,6 +8,13 @@ using UnityEngine;
 using Utils;
 using Random = UnityEngine.Random;
 
+public enum QuaffleState
+{
+    Space,
+    CachedByTeam1,
+    CachedByTeam2,
+}
+
 public class GameManager : SingletonBehaviour<GameManager>
 {
     [SerializeField]
@@ -16,10 +23,14 @@ public class GameManager : SingletonBehaviour<GameManager>
     private int gameTimeMinutes = 8;
     [SerializeField]
     private int gameStartCountdown = 3;
-    
+
     [Header("Testing only"),SerializeField]
     private float _gameTimeScale = 2;
-    
+
+    public QuaffleState g_quaffleState = QuaffleState.Space;
+    public GameObject quaffle = null;
+
+
     private Team _playerTeam;
     private float timerSeconds;
     
@@ -33,6 +44,29 @@ public class GameManager : SingletonBehaviour<GameManager>
     {
         Time.timeScale = _gameTimeScale;
         StartGame();
+
+        quaffle = GameObject.FindGameObjectWithTag("Quaffle");
+    }
+
+    private void Update()
+    {
+        CheckQuaffleState();
+    }
+
+    public void CheckQuaffleState()
+    {
+        if (quaffle != null)
+        {
+            if (quaffle.GetComponent<Quaffle>().isCached)
+            {
+                if (quaffle.GetComponent<Quaffle>().takenChaser.GetComponent<TeamEntity>().MyTeam == Team.Team_1)
+                    g_quaffleState = QuaffleState.CachedByTeam1;
+                else
+                    g_quaffleState = QuaffleState.CachedByTeam2;
+            }
+            else
+                g_quaffleState = QuaffleState.Space;
+        }
     }
 
     public void StartGame()
@@ -46,9 +80,11 @@ public class GameManager : SingletonBehaviour<GameManager>
         enumValues.Remove(side1team);
         var side2team = enumValues[0];
         
+        /*
         SidesManager.Instance.AssignTeams(side1team,side1team==_playerTeam, 
             side2team, side2team == _playerTeam, _playerStartType);
-       
+       */
+
         StartCoroutine(StartGameBeginCountdown());
         StartCoroutine(GameTimer());
     }

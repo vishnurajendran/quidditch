@@ -55,6 +55,18 @@ namespace BT
             context[key] = value;
         }
 
+        public void SetRootContext(string key, object value)
+        {
+            BaseNode curPar = this;
+            BaseNode nextPar = parent;
+            while(nextPar != null)
+            {
+                curPar = nextPar;
+                nextPar = nextPar.parent;
+            }
+            curPar.SetContext(key, value);
+        }
+
         public object GetContext(string key)
         {
             object value = null;
