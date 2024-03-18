@@ -12,7 +12,19 @@ public class BTBeater : BaseBT
 
         BaseNode root = new SelectorNode(new List<BaseNode>
         {
-             
+            new SequenceNode(new List<BaseNode>
+            {
+                new NodeCheckAvailableBeatBludger(_actor),
+                new NodeBeateBludger(_actor),
+            }),
+
+            new SequenceNode(new List<BaseNode>
+            {
+                new NodeCheckPerceptBludger(_actor),
+                new NodeChaseAvailableBludger(_actor),
+            }),
+
+            new NodeFlyInCircleBeater(_actor),
         });
 
         return root;

@@ -10,16 +10,43 @@ using UnityEngine.UIElements;
 public class Role : MonoBehaviour
 {
     //Parameters for chaser
+    [SerializeField] public float throwRadius = 30.0f;
+    [SerializeField] public float attackCircleRadius = 15.0f;
+    [SerializeField] public float guardeCircleRadius = 25.0f;
     [SerializeField] public GameObject cachedQuaffle = null;
     [SerializeField] public bool isCached = false;
     [SerializeField] public List<Transform> friendChaser = new List<Transform>();
     [SerializeField] public List<Transform> friendBeater = new List<Transform>();
 
+    //Parameters for beater
+    [SerializeField] public GameObject focusBludger = null;
+    [SerializeField] public float perceptionRange = 100.0f;
+    [SerializeField] public float beatRange = 8.0f;
+    [SerializeField] public float guardeRadius = 35.0f;
 
     public Parabola throwIndicator;
     private GameObject target;
 
     private PlayerType playerType;
+
+    private void PerceptBludger()
+    {
+        float minDistance = perceptionRange;
+        for(int i =0;  i < GameManager.Instance.Bludges.Count; ++i)
+        {
+            //todo:optimize the AI logic in here, rightnow we ignore the bludger is in path
+            if (!GameManager.Instance.Bludges[i].GetComponent<Bludger>().activeForAttack)
+                continue;
+            float curDistance = Vector3.Distance(GameManager.Instance.Bludges[i].transform.position, transform.position);
+            if(curDistance < minDistance)
+            {
+                minDistance = curDistance;
+                focusBludger = GameManager.Instance.Bludges[i];
+            }
+        }
+        if (minDistance == perceptionRange)
+            focusBludger = null;
+    }
 
     private void InitialFriendsInformation()
     {
@@ -87,6 +114,28 @@ public class Role : MonoBehaviour
         }
     }
 
+    public bool IsBeatAvailable()
+    {
+        if(focusBludger != null)
+        {
+            float curDistance = Vector3.Distance(focusBludger.transform.position, this.transform.position);
+            if (curDistance < beatRange)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void BeatBludger(Vector3 position)
+    {
+        if(focusBludger != null)
+        {
+            Vector3[] pathPoints = GetThrowPath(transform.position, position);
+            focusBludger.GetComponent<Bludger>().SetPathPoints(pathPoints);
+        }
+    }
+
     //get the quaffle
     public void TakeQuaffle()
     {
@@ -99,8 +148,12 @@ public class Role : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //the npc logic
+        PerceptBludger();
+
         if (!IsPlayer()) return;
 
+        //the player logic
         if (playerType == PlayerType.Chaser)
         {
             if (Input.GetKeyUp(KeyCode.F))
@@ -116,5 +169,15 @@ public class Role : MonoBehaviour
                 }
             }
         }
+
+        if(playerType == PlayerType.Beater)
+        {
+            
+            if (Input.GetKeyUp(KeyCode.F))
+            {
+               //todo: player logic
+            }
+        }
+
     }
 }

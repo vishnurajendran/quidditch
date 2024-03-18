@@ -17,6 +17,7 @@ public class Quaffle : MonoBehaviour
     public float fallingVelocity = 2.0f;
     public float velocity = 10.0f;
 
+    public bool activeForAttack = true;
     public List<Vector3> pathPoints = new List<Vector3>();
     private int pathIndex = 0;
 

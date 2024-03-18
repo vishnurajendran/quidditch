@@ -12,6 +12,14 @@ namespace Teams
         public Team MyTeam => _team;
         public PlayerType MyPlayerType => _playerType;
         
+        public Team GetEnemyTeam()
+        {
+            if (_team == Team.Team_1)
+                return Team.Team_2;
+            else
+                return Team.Team_1;
+        }
+
         public void SetPlayerType(PlayerType playerType)
         {
             _playerType = playerType;

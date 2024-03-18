@@ -6,9 +6,36 @@ using UnityEngine;
 using Agents;
 using UnityEngine.UIElements;
 using Teams;
+using JetBrains.Annotations;
 
 namespace BT
 {
+
+    public static class ActionUtils
+    {
+        public static Vector3 CircleFlyDirection(Vector3 circleCenter, Vector3 actorPos, float radius)
+        {
+            Vector3 originDirection = circleCenter - actorPos;
+            Vector3 planeDirection = originDirection;
+            planeDirection.y = 0.0f;
+            Vector3 targetPos = circleCenter + planeDirection.normalized * radius;
+            float distance = Vector3.Distance(circleCenter, actorPos);
+
+            //out of circle
+            if (distance > radius)
+            {
+                Vector3 desiredVector = targetPos - actorPos;
+                return desiredVector;
+            }
+            else //in circle
+            {
+                Vector3 desiredVector = Vector3.Cross((circleCenter - actorPos).normalized,
+                    Vector3.up);
+                return desiredVector;
+            }
+        }
+
+    }
 
     public class NodeSnitchFloat : BaseNode
     {
@@ -78,6 +105,9 @@ namespace BT
         }
     }
 
+    /*
+     * The action nodes used in chaser
+     */
     public class NodeFlyInCircle : BaseNode
     {
         public NodeFlyInCircle(AgentController actor_)
@@ -89,30 +119,14 @@ namespace BT
             Team teamType = GameManager.Instance.quaffle.GetComponent<Quaffle>().takenChaser.GetComponent<TeamEntity>().MyTeam;
             Vector3 circleCenter = GameManager.Instance.quaffle.GetComponent<Quaffle>().takenChaser.transform.position;
 
-            float radius = actor.GetComponent<NPCController>().guardeCircleRadius;
+            float radius = actor.GetComponent<Role>().guardeCircleRadius;
             if (teamType != actor.GetComponent<TeamEntity>().MyTeam)
             {
-                radius = actor.GetComponent<NPCController>().attackCircleRadius;
+                radius = actor.GetComponent<Role>().attackCircleRadius;
             }
-            
-            Vector3 originDirection = circleCenter - actor.transform.position;
-            Vector3 planeDirection = originDirection;
-            planeDirection.y = 0.0f;
-            Vector3 targetPos = circleCenter + planeDirection.normalized * radius;
-            float distance = Vector3.Distance(circleCenter, actor.transform.position);
 
-            //out of circle
-            if (distance > radius)
-            {
-                Vector3 desiredVector = targetPos - actor.transform.position;
-                (actor as NPCController).AddKinematicVector(desiredVector);
-            }
-            else //in circle
-            {
-                Vector3 desiredVector = Vector3.Cross((circleCenter - actor.transform.position).normalized,
-                    Vector3.up);
-                (actor as NPCController).AddKinematicVector(desiredVector);
-            }
+            Vector3 desiredVec = ActionUtils.CircleFlyDirection(circleCenter, actor.transform.position, radius);
+            (actor as NPCController).AddKinematicVector(desiredVec);
 
             state = NodeState.RUNNING;
             return state;
@@ -321,7 +335,7 @@ namespace BT
         public override NodeState Process()
         {
             List<Transform> targetTransforms = actor.GetComponent<CharacterSwitcher>().GetTeamTargets();
-            float throwRange = actor.GetComponent<NPCController>().throwRadius;
+            float throwRange = actor.GetComponent<Role>().throwRadius;
             float distance = Vector3.Distance(targetTransforms[0].position, actor.transform.position);
             if (distance > throwRange)
                 return NodeState.FAILURE;
@@ -360,4 +374,122 @@ namespace BT
             return state;
         }
     }
+
+    /*
+    * The action nodes used in bludger
+    */
+    public class NodeCheckPerceptBludger : BaseNode
+    {
+        public NodeCheckPerceptBludger(AgentController actor_)
+          : base(actor_)
+        {
+        }
+        public override NodeState Process()
+        {
+            if(actor.GetComponent<Role>().focusBludger != null)
+            {
+                return NodeState.SUCCESS;
+            }
+            return NodeState.FAILURE;
+        }
+    }
+
+    public class NodeCheckAvailableBeatBludger : BaseNode
+    {
+        public NodeCheckAvailableBeatBludger(AgentController actor_)
+          : base(actor_)
+        {
+        }
+        public override NodeState Process()
+        {
+            if (actor.GetComponent<Role>().IsBeatAvailable())
+            {
+                return NodeState.SUCCESS;
+            }
+            return NodeState.FAILURE;
+        }
+    }
+
+    public class NodeChaseAvailableBludger : BaseNode
+    {
+        public NodeChaseAvailableBludger(AgentController actor_)
+          : base(actor_)
+        {
+        }
+        public override NodeState Process()
+        {
+            Vector3 desiredVector = actor.GetComponent<Role>().focusBludger.transform.position - actor.transform.position;
+            (actor as NPCController).AddKinematicVector(desiredVector.normalized);
+            return NodeState.RUNNING;
+        }
+    }
+
+    public class NodeBeateBludger : BaseNode
+    {
+        public NodeBeateBludger(AgentController actor_)
+         : base(actor_)
+        {
+        }
+
+        public Vector3 GetBeatTargetPosition()
+        {
+            QuaffleState curState = GameManager.Instance.g_quaffleState;
+            //cached by other team, beat the bludge to the npc with quaffle
+            if ((curState == QuaffleState.CachedByTeam1 && actor.gameObject.GetComponent<TeamEntity>().MyTeam == Team.Team_2) ||
+                (curState == QuaffleState.CachedByTeam2 && actor.gameObject.GetComponent<TeamEntity>().MyTeam == Team.Team_1))
+            {
+                return GameManager.Instance.quaffle.GetComponent<Quaffle>().takenChaser.transform.position;
+            }
+            //otherwise beat the bludge to any chaser of the other team
+            else
+            {
+                Team enemyTeam = actor.GetComponent<TeamEntity>().GetEnemyTeam();
+                List<Transform> enemyChasers = TeamManager.GetChasersOfTeam(enemyTeam);
+                int randomIndex = Random.Range(0, enemyChasers.Count);
+                return enemyChasers[randomIndex].position;
+            }
+        }
+
+        public override NodeState Process()
+        {
+            Vector3 position = GetBeatTargetPosition();
+            actor.GetComponent<Role>().BeatBludger(position);
+            return NodeState.SUCCESS;
+        }
+    }
+
+    public class NodeFlyInCircleBeater : BaseNode
+    {
+        public NodeFlyInCircleBeater(AgentController actor_)
+            : base(actor_)
+        {
+        }
+        public override NodeState Process()
+        {
+            Team teamType = actor.GetComponent<TeamEntity>().MyTeam;
+            List<Transform> teammates = TeamManager.GetChasersOfTeam(teamType);
+
+            Vector3 centralOrigin = Vector3.zero;
+            for(int i = 0; i < teammates.Count; ++i)
+            {
+                centralOrigin += teammates[i].position;
+            }
+            centralOrigin /= teammates.Count;
+
+            //for test goal
+            if (teammates.Count == 0)
+            {
+                centralOrigin = new Vector3(10, 8, 10);
+            }
+
+            float radius = actor.GetComponent<Role>().guardeRadius;
+            Vector3 desiredVector = ActionUtils.CircleFlyDirection(centralOrigin, actor.transform.position, radius);
+            (actor as NPCController).AddKinematicVector(desiredVector);
+
+            state = NodeState.RUNNING;
+            return state;
+        }
+    }
+
+
 }

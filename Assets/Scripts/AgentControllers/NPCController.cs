@@ -9,16 +9,17 @@ namespace AgentControllers
     {
         [SerializeField] private float floorY;
         [SerializeField] private float ceilY;
-        [SerializeField] public float throwRadius = 30.0f;
-        [SerializeField] public float attackCircleRadius = 15.0f;
-        [SerializeField] public float guardeCircleRadius = 25.0f;
-
 
         private Vector3 curDirection = Vector3.zero;
 
         private float CalculateHorizontal()
         {
             return Vector3.Dot(curDirection.normalized, transform.right);
+        }
+
+        public void SetKinematicVector(Vector3 kVec)
+        {
+            curDirection = kVec.normalized;
         }
 
         public void AddKinematicVector(Vector3 kVec, float weight = 1.0f)

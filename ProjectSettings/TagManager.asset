@@ -7,6 +7,10 @@ TagManager:
   - Team1
   - Team2
   - Ball
+  - Quaffle
+  - Team1Target
+  - Team2Target
+  - Bludger
   layers:
   - Default
   - TransparentFX
