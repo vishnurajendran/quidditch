@@ -23,6 +23,8 @@ public class GameManager : SingletonBehaviour<GameManager>
     private int gameTimeMinutes = 8;
     [SerializeField]
     private int gameStartCountdown = 3;
+    [SerializeField]
+    private Vector3 quaffleResetPosition = new Vector3(0, 50.0f, 0);
 
     [Header("Testing only"),SerializeField]
     private float _gameTimeScale = 2;
@@ -96,6 +98,12 @@ public class GameManager : SingletonBehaviour<GameManager>
         StartCoroutine(GameTimer());
     }
 
+    public void ResetQuafflePosition()
+    {
+        quaffle.transform.position = quaffleResetPosition;
+        quaffle.GetComponent<Quaffle>().ResetStatus();
+    }
+
     private IEnumerator StartGameBeginCountdown()
     { 
         int countdown = gameStartCountdown;
@@ -148,5 +156,6 @@ public class GameManager : SingletonBehaviour<GameManager>
     public void QuaffleScored(Team team)
     {
         OnQuaffleScored?.Invoke(team);
+        ResetQuafflePosition();
     }
 }

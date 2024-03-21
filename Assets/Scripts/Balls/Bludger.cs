@@ -86,7 +86,7 @@ public class Bludger : MonoBehaviour
             }
 
             SetKinematicVector((pathPoints[pathIndex] - transform.position));
-            if (Vector3.Distance(pathPoints[pathIndex], transform.position) < 5.0f)
+            if (Vector3.Distance(pathPoints[pathIndex], transform.position) < 8.0f)
             {
                 pathIndex = (pathIndex + 1);
             }

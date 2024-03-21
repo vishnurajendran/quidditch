@@ -17,11 +17,18 @@ public class Quaffle : MonoBehaviour
     public float fallingVelocity = 2.0f;
     public float velocity = 10.0f;
 
-    public bool activeForAttack = true;
     public List<Vector3> pathPoints = new List<Vector3>();
     private int pathIndex = 0;
 
-    private Vector3 originPos = Vector3.zero;
+    private Vector3 originPos = new Vector3(0, 50, 0);
+
+    public void ResetStatus()
+    {
+        pathPoints.Clear();
+        pathIndex = 0;
+        originPos = transform.position;
+    }
+
     public void SetPathPoints(Vector3[] _pathPoints)
     {
         takenChaser = null;
@@ -50,8 +57,7 @@ public class Quaffle : MonoBehaviour
                     Debug.DrawLine(pathPoints[i-1], pathPoints[i], Color.red);
                 }
                 if (pathIndex >= pathPoints.Count) {
-                    pathPoints.Clear();
-                    pathIndex = 0;
+                    ResetStatus();
                     return;
                 }
 
@@ -64,7 +70,7 @@ public class Quaffle : MonoBehaviour
             }
             else
             {
-                if (originPos == Vector3.zero)
+                if (originPos == new Vector3(0, 50, 0))
                     originPos = transform.position;
                 float sinValue = Mathf.Sin(Time.fixedTime);
                 Vector3 newPos = originPos;
@@ -76,7 +82,7 @@ public class Quaffle : MonoBehaviour
         {
             //float after the path finish
             transform.position = takenChaser.transform.position + takenChaser.transform.right;
-            originPos = Vector3.zero;
+            originPos = new Vector3(0, 50, 0);
         }
     }
 }

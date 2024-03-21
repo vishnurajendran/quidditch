@@ -13,6 +13,7 @@ public class Role : MonoBehaviour
     [SerializeField] public float throwRadius = 30.0f;
     [SerializeField] public float attackCircleRadius = 15.0f;
     [SerializeField] public float guardeCircleRadius = 25.0f;
+    [SerializeField] public float escapeBuldgerRadius = 35.0f;
     [SerializeField] public GameObject cachedQuaffle = null;
     [SerializeField] public bool isCached = false;
     [SerializeField] public List<Transform> friendChaser = new List<Transform>();
@@ -23,6 +24,7 @@ public class Role : MonoBehaviour
     [SerializeField] public float perceptionRange = 100.0f;
     [SerializeField] public float beatRange = 8.0f;
     [SerializeField] public float guardeRadius = 35.0f;
+    [SerializeField] public float beatStrength = 30.0f;
 
     public Parabola throwIndicator;
     private GameObject target;

@@ -7,6 +7,7 @@ using Agents;
 using UnityEngine.UIElements;
 using Teams;
 using JetBrains.Annotations;
+using Unity.VisualScripting;
 
 namespace BT
 {
@@ -130,6 +131,62 @@ namespace BT
 
             state = NodeState.RUNNING;
             return state;
+        }
+    }
+
+    public class NodeEscapeFromBludger : BaseNode
+    {
+        public NodeEscapeFromBludger(AgentController actor_)
+               : base(actor_)
+        {
+        }
+
+        public bool ApproximationVector(Vector3 a, Vector3 b)
+        {
+            float xv = Mathf.Abs(a.x - b.x);
+            float yv = Mathf.Abs(a.y - b.y);
+            float zv = Mathf.Abs(a.z - b.z);
+            return (xv < 0.1f && yv < 0.1f && zv < 0.1f);
+        }
+
+        public override NodeState Process()
+        {
+            List<GameObject> bludges = GameManager.Instance.Bludges;
+            float buldgerEscapeRange = actor.GetComponent<Role>().escapeBuldgerRadius;
+
+            List<Transform> escapeObjectsList = new List<Transform>();
+            for(int i =0; i < bludges.Count; ++i)
+            {
+                float distance = Vector3.Distance(actor.transform.position, 
+                    bludges[i].transform.position);
+                if(distance < buldgerEscapeRange)
+                    escapeObjectsList.Add(bludges[i].transform);
+            }
+
+            if (escapeObjectsList.Count == 0)
+                return NodeState.FAILURE;
+
+            Vector3 escapedVector = Vector3.zero;
+            if (escapeObjectsList.Count == 1)
+            {
+                escapedVector = (actor.transform.position - escapeObjectsList[0].position).normalized;
+            }
+            else //count == 2
+            {
+                Vector3 escapeFromBall0 = (actor.transform.position - escapeObjectsList[0].position).normalized;
+                Vector3 escapeFromBall1 = (actor.transform.position - escapeObjectsList[1].position).normalized;
+                
+                if(ApproximationVector(escapeFromBall0 + escapeFromBall1, Vector3.zero))
+                {
+                    escapedVector = Vector3.Cross(escapeFromBall0, Vector3.up);
+                }
+                else
+                {
+                    escapedVector = (escapeFromBall0 + escapeFromBall1).normalized;
+                }
+            }
+            (actor as NPCController).AddKinematicVector(escapedVector);
+            return NodeState.FAILURE;
         }
     }
 
@@ -292,6 +349,8 @@ namespace BT
         {
             Vector3 quafflePosition = GameManager.Instance.quaffle.transform.position;
             Vector3 desiredVector = (quafflePosition - actor.transform.position).normalized;
+            Debug.Log("NodeChaseQuaffle desired position:" + quafflePosition + " desired vector:" + desiredVector);
+
             (actor as NPCController).AddKinematicVector(desiredVector);
             state = NodeState.RUNNING;
             return state;
@@ -445,8 +504,25 @@ namespace BT
             {
                 Team enemyTeam = actor.GetComponent<TeamEntity>().GetEnemyTeam();
                 List<Transform> enemyChasers = TeamManager.GetChasersOfTeam(enemyTeam);
-                int randomIndex = Random.Range(0, enemyChasers.Count);
-                return enemyChasers[randomIndex].position;
+                //if there is no available enemy chaser, beat the ball into the other side of chasers
+                if (enemyChasers.Count == 0)
+                {
+                    Team friendTeam = actor.GetComponent<TeamEntity>().MyTeam;
+                    List<Transform> friendChaser = TeamManager.GetChasersOfTeam(friendTeam);
+                    Vector3 gradientPos = Vector3.zero;
+                    for(int i = 0; i < friendChaser.Count; i++)
+                    {
+                        gradientPos += friendChaser[i].position;
+                    }
+                    float strength = actor.GetComponent<Role>().beatStrength;
+                    Vector3 targetPosition = actor.transform.position + (gradientPos - actor.transform.position).normalized * strength;
+                    return targetPosition;
+                }
+                else
+                {
+                    int randomIndex = Random.Range(0, enemyChasers.Count);
+                    return enemyChasers[randomIndex].position;
+                }
             }
         }
 

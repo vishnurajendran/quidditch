@@ -12,6 +12,8 @@ public class BTChaser : BaseBT
 
         BaseNode root = new SelectorNode(new List<BaseNode>
         {
+            new NodeEscapeFromBludger(_actor),
+
             //if the quaffle is in space, try to catch it 
             new SequenceNode(new List<BaseNode> 
             {
