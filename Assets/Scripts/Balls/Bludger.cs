@@ -21,8 +21,8 @@ public class Bludger : MonoBehaviour
         List<Transform> team1Transforms = TeamManager.GetPlayersOfTeam(Team.Team_1);
         List<Transform> team2Transforms = TeamManager.GetPlayersOfTeam(Team.Team_2);
 
-        Debug.Log("the bludger start function1:" + team1Transforms.Count);
-        Debug.Log("the bludger start function2:" + team2Transforms.Count);
+        //Debug.Log("the bludger start function1:" + team1Transforms.Count);
+        //Debug.Log("the bludger start function2:" + team2Transforms.Count);
 
 
         float minDistance = float.PositiveInfinity;

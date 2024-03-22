@@ -270,6 +270,7 @@ GameObject:
   - component: {fileID: 631764946575031773}
   - component: {fileID: 9010853105390204063}
   - component: {fileID: 3600615632040524371}
+  - component: {fileID: 4149412443235668011}
   - component: {fileID: 4419224925387632962}
   - component: {fileID: 1626788968689847196}
   - component: {fileID: 4629785767014851736}
@@ -349,6 +350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _graceAngleMult: 10
   _lockAngle: 60
+  selected: {fileID: 0}
 --- !u!114 &3600615632040524371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,6 +361,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1ef8d99a57ee70f48a4fb0f31c1d060a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4149412443235668011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2865472611429576341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b964f6f4c8d062b45b93310c186951a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &4419224925387632962
@@ -373,8 +387,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82381125140d421384fbf09a7d6cd860, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _team: 0
-  _playerType: 0
+  _team: 1
+  _playerType: 3
 --- !u!114 &1626788968689847196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -382,7 +396,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2865472611429576341}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0b3fed2ebe740a7805fec7a26494a1c, type: 3}
   m_Name: 
@@ -395,7 +409,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2865472611429576341}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc9aa67fa7a39414eb632f08019da93f, type: 3}
   m_Name: 
@@ -414,8 +428,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778b718a81cd8414db5d18e78da5256a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  throwRadius: 30
+  attackCircleRadius: 15
+  guardeCircleRadius: 25
+  escapeBuldgerRadius: 35
   cachedQuaffle: {fileID: 0}
   isCached: 0
+  friendChaser: []
+  friendBeater: []
+  focusBludger: {fileID: 0}
+  perceptionRange: 100
+  beatRange: 3
+  guardeRadius: 35
+  beatStrength: 80
   throwIndicator: {fileID: 0}
 --- !u!1 &4043343900321140349
 GameObject:

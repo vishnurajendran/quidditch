@@ -89,10 +89,10 @@ public class GameManager : SingletonBehaviour<GameManager>
         enumValues.Remove(side1team);
         var side2team = enumValues[0];
         
-        /*
+        
         SidesManager.Instance.AssignTeams(side1team,side1team==_playerTeam, 
             side2team, side2team == _playerTeam, _playerStartType);
-       */
+       
 
         StartCoroutine(StartGameBeginCountdown());
         StartCoroutine(GameTimer());

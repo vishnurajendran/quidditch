@@ -1,4 +1,5 @@
 using System;
+using AgentControllers;
 using Gameplay;
 using UnityEngine;
 
@@ -18,6 +19,24 @@ namespace Teams
                 return Team.Team_2;
             else
                 return Team.Team_1;
+        }
+
+        public void UpdateRoleComponent()
+        {
+            GetComponent<NPCController>().enabled = true;
+            GetComponent<AgentUserController>().enabled = false;
+            if(MyPlayerType == PlayerType.Chaser)
+            {
+                GetComponent<BTBeater>().enabled = false;
+                GetComponent<BTChaser>().enabled = true;
+            }
+            else if(MyPlayerType == PlayerType.Beater)
+            {
+                GetComponent<BTChaser>().enabled = false;
+                GetComponent<BTBeater>().enabled = true;
+            }
+
+
         }
 
         public void SetPlayerType(PlayerType playerType)

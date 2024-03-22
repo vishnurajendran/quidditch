@@ -355,7 +355,7 @@ MonoBehaviour:
   gameTimeMinutes: 2
   gameStartCountdown: 3
   quaffleResetPosition: {x: 0, y: 50, z: 0}
-  _gameTimeScale: 2
+  _gameTimeScale: 1
   g_quaffleState: 0
   quaffle: {fileID: 0}
   Bludges: []

@@ -708,9 +708,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floorY: 2
   ceilY: 200
-  throwRadius: 30
-  attackCircleRadius: 15
-  guardeCircleRadius: 25
 --- !u!114 &7869647523115731962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -748,8 +745,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82381125140d421384fbf09a7d6cd860, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _team: 0
-  _playerType: 0
+  _team: 1
+  _playerType: 3
 --- !u!114 &6565195685738223571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -777,10 +774,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778b718a81cd8414db5d18e78da5256a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  throwRadius: 30
+  attackCircleRadius: 15
+  guardeCircleRadius: 25
+  escapeBuldgerRadius: 35
   cachedQuaffle: {fileID: 0}
   isCached: 0
   friendChaser: []
   friendBeater: []
+  focusBludger: {fileID: 0}
+  perceptionRange: 100
+  beatRange: 8
+  guardeRadius: 35
+  beatStrength: 30
   throwIndicator: {fileID: 0}
 --- !u!1 &7510783850625598843
 GameObject:
