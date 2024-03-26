@@ -26,10 +26,32 @@ public class Role : MonoBehaviour
     [SerializeField] public float guardeRadius = 35.0f;
     [SerializeField] public float beatStrength = 30.0f;
 
+
+    public GameObject dizzyParticleEffect;
+
+
+
+    public float curColdDownInDizziness = 0.0f;
+    public float dissinessColdDownTime = 5.0f;
+
+
     public Parabola throwIndicator;
     private GameObject target;
 
     private PlayerType playerType;
+
+
+    public void HitByBludger()
+    {
+        curColdDownInDizziness = dissinessColdDownTime;
+        isCached = false;
+        cachedQuaffle.GetComponent<Quaffle>().ReleaseByBludger();
+    }
+
+    public bool IsInDizzy()
+    {
+        return curColdDownInDizziness > 0.0f;   
+    }
 
     private void PerceptBludger()
     {
@@ -149,6 +171,17 @@ public class Role : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(curColdDownInDizziness > 0.0f)
+        {
+            curColdDownInDizziness -= Time.deltaTime;
+            dizzyParticleEffect.SetActive(true);
+        }
+        else
+        {
+            dizzyParticleEffect.SetActive(false);
+        }
+            
+
         //the npc logic
         PerceptBludger();
 

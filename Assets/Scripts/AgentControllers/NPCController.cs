@@ -40,6 +40,11 @@ namespace AgentControllers
         }
 
 
+        public bool CheckIsHitByBludger()
+        {
+            return GetComponent<Role>() && GetComponent<Role>().curColdDownInDizziness > 0.0f;
+        }
+
         public void ProcessCurDirectionInLimitation()
         {
             Vector3 correctDirVect = Vector3.zero;
@@ -91,8 +96,18 @@ namespace AgentControllers
                 float correctZ = GetInterpolationValue(negativeZ, takenForceRadius);
                 correctDirVect += new Vector3(0.0f, correctZ, 0.0f);
             }
-            
-            curDirection = (curDirection + correctDirVect).normalized;
+
+
+            //check the dizzy state
+            if(CheckIsHitByBludger())
+            {
+                curDirection = new Vector3(0.0f, -1.0f, 0.0f);
+                Debug.Log("current direction:" + curDirection);
+            }
+            else
+            {
+                curDirection = (curDirection + correctDirVect).normalized;
+            }
         }
 
 
@@ -103,7 +118,12 @@ namespace AgentControllers
                 return;
             
             bool boost = false; //todo: boost speed with decision
+            bool slowing = false;
             float curHorizontal = CalculateHorizontal();
+
+            //pre-processing the cur direction vector
+            ProcessCurDirectionInLimitation();
+            slowing = CheckIsHitByBludger();
 
             //limitation
             if (Mathf.Approximately(transform.position.y, floorY) && curDirection.y < 0)
@@ -111,11 +131,10 @@ namespace AgentControllers
             else if (Mathf.Approximately(transform.position.y, ceilY) && curDirection.y > 0)
                 curDirection.y = 0;
 
-            //pre-processing the cur direction vector
-            ProcessCurDirectionInLimitation();
             _agent.Move(curDirection.normalized);
             _agent.SetGraphicRollDirection(curHorizontal);
             _agent.Boost(boost);
+            _agent.Slow(slowing);
 
             //reset current direction
             curDirection = Vector3.zero;

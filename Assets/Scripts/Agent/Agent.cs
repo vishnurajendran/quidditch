@@ -17,12 +17,14 @@ namespace Agents
         [SerializeField] private float _maxRoll;
         [SerializeField] private float _moveSpeed;
         [SerializeField] private float _boostMultiplier = 1.5f;
+        [SerializeField] private float _slowMultiplier = 0.05f;
         [SerializeField] private float _lookSpeed;
         
         private Rigidbody _rb;
         private Vector3 _inputVec;
         private float _graphicRollDir;
         private bool _boosting;
+        private bool _slowing;
         private void Start()
         {
             _rb = GetComponent<Rigidbody>();
@@ -31,6 +33,7 @@ namespace Agents
         private void FixedUpdate()
         {
             var maxSpeed = _moveSpeed * (_boosting ? _boostMultiplier : 1);
+            maxSpeed = maxSpeed * (_slowing ? _slowMultiplier : 1);
             _rb.velocity += _inputVec * (maxSpeed * Time.fixedDeltaTime);
             
             if(_rb.velocity == Physics.gravity)
@@ -71,6 +74,11 @@ namespace Agents
         public void Boost(bool boost)
         {
             _boosting = boost;
+        }
+
+        public void Slow(bool slow)
+        {
+            _slowing = slow;
         }
         
         public void SetGraphicRollDirection(float dir)

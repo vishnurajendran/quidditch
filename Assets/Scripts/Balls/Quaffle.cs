@@ -40,6 +40,15 @@ public class Quaffle : MonoBehaviour
         lastThrowingNPC = null;
     }
 
+    public void ReleaseByBludger()
+    {
+        pathPoints.Clear();
+        pathIndex = 0;
+        originPos = transform.position;
+        isCached = false;
+        takenChaser = null;
+    }
+
     public void SetPathPoints(Vector3[] _pathPoints, GameObject throwingNPC, bool isToTarget_ = false)
     {
         isToTarget = isToTarget_;

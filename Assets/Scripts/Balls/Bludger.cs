@@ -87,4 +87,16 @@ public class Bludger : MonoBehaviour
             }            
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if((other.tag == "Team1" || other.tag == "Team2") && 
+            !other.transform.parent.parent.GetComponent<Role>().IsInDizzy())
+        {
+            //Debug.Log("Hit the collider:" + other.name);
+            other.transform.parent.parent.GetComponent<Role>().HitByBludger();
+        }
+    }
+
+
 }
