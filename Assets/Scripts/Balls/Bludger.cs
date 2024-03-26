@@ -6,9 +6,25 @@ using UnityEngine;
 
 public class Bludger : MonoBehaviour
 {
-    public List<Vector3> pathPoints = new List<Vector3>();
-    private int pathIndex = 0;
     public bool activeForAttack = true; //is ready for attack
+    public Vector3 beatDir = Vector3.zero;
+    public float chaseColdTime = 10.0f;
+    public float curColdTime = 0.0f;
+    public GameObject previousBeater = null;
+
+    public void Beat(GameObject beaterObj, Vector3 dirVec)
+    {
+        beatDir = dirVec;
+        previousBeater = beaterObj;
+        curColdTime = chaseColdTime;
+    }
+
+    public bool IsThereHasNeedBeat(GameObject beaterNPC)
+    {
+        if(previousBeater != null && previousBeater == beaterNPC) 
+            return false;
+        return true;
+    }
 
     private void Start()
     {
@@ -48,19 +64,6 @@ public class Bludger : MonoBehaviour
         return res;
     }
 
-
-    public void SetPathPoints(Vector3[] _pathPoints)
-    {
-        activeForAttack = false;
-        pathPoints.Add(transform.position);
-        for (int i = 0; i < _pathPoints.Length; i++)
-        {
-            pathPoints.Add(_pathPoints[i]);
-        }
-        Debug.Log("Current Path Points:" + pathPoints.Count);
-    }
-
-
     private void SetKinematicVector(Vector3 direction)
     {
         GetComponent<NPCController>().SetKinematicVector(direction.normalized);
@@ -69,33 +72,19 @@ public class Bludger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log("the path points:" + pathPoints.Length);
-        if (pathPoints.Count != 0)
+        if (curColdTime > 0.0f)
         {
-            //Debug.Log("the path points:" + pathPoints.Count);
-            for (int i = 1; i < pathPoints.Count; ++i)
-            {
-                Debug.DrawLine(pathPoints[i - 1], pathPoints[i], Color.red);
-            }
-            if (pathIndex >= pathPoints.Count)
-            {
-                pathPoints.Clear();
-                pathIndex = 0;
-                activeForAttack = true;
-                return;
-            }
-
-            SetKinematicVector((pathPoints[pathIndex] - transform.position));
-            if (Vector3.Distance(pathPoints[pathIndex], transform.position) < 8.0f)
-            {
-                pathIndex = (pathIndex + 1);
-            }
+            curColdTime -= Time.deltaTime;
+            SetKinematicVector(beatDir);
         }
         else
         {
+            if (previousBeater != null) previousBeater = null;
             Transform nearestPlayer = GetClosestPlayer();
-            Debug.Log("the nearest player vector:" + (nearestPlayer.position - transform.position));
-            SetKinematicVector((nearestPlayer.position - transform.position));
+            if(nearestPlayer != null)
+            {
+                SetKinematicVector((nearestPlayer.position - transform.position));
+            }            
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Teams
 
             GameObject[] team1targets = GameObject.FindGameObjectsWithTag("Team1Target");
             GameObject[] team2targets = GameObject.FindGameObjectsWithTag("Team2Target");
-            //Debug.Log("TryInitTargetsDict team1 targets:" + team1targets.Length + "  team2 targets:" + team2targets.Length);
+            Debug.Log("TryInitTargetsDict team1 targets:" + team1targets.Length + "  team2 targets:" + team2targets.Length);
             for (int i = 0; i < team1targets.Length; i++)
                 _targetsByTeam[Team.Team_1].Add(team1targets[i].transform);
             for(int i = 0;i < team2targets.Length; i++)

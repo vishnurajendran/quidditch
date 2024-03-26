@@ -17,10 +17,7 @@ public class BTGoldenSnitch : BaseBT
             }),
             new NodeSnitchFloat(_actor, 2.0f, 2.0f),
     });
-            
-            
-            
-
+           
         return root;
     }
 }

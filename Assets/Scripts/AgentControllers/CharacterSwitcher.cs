@@ -15,9 +15,6 @@ namespace AgentControllers
         
         private AgentUserController _userController;
         private NPCController _npController;
-
-        private List<Transform> _myTeamTargets;
-        private List<Transform> _myTeamPlayers;
         private List<Transform> potentialTargets;
         private Transform _cameraTrf;
 
@@ -30,13 +27,16 @@ namespace AgentControllers
             potentialTargets = new List<Transform>();
             _userController = GetComponent<AgentUserController>();
             _npController = GetComponent<NPCController>();
-            _myTeamPlayers = TeamManager.GetPlayersOfTeam(GetComponent<TeamEntity>().MyTeam);
-            _myTeamTargets = TeamManager.GetTargetsOfTeam(GetComponent<TeamEntity>().MyTeam);
+        }
+
+        public List<Transform> GetTeamPlayers()
+        {
+            return TeamManager.GetPlayersOfTeam(GetComponent<TeamEntity>().MyTeam); 
         }
 
         public List<Transform> GetTeamTargets()
         {
-            return _myTeamTargets;
+            return TeamManager.GetTargetsOfTeam(GetComponent<TeamEntity>().MyTeam);
         }
 
         private void FixedUpdate()
@@ -59,7 +59,7 @@ namespace AgentControllers
             }
             
             //Add any that is longer visible
-            foreach (var player in _myTeamPlayers)
+            foreach (var player in GetTeamPlayers())
             {
                 if(player == transform)
                     continue;
@@ -72,7 +72,7 @@ namespace AgentControllers
             }
 
             //Also add the targets to the potential targets
-            foreach(var target in _myTeamTargets)
+            foreach(var target in GetTeamTargets())
             {
                 if (VisibleToCamera(target))
                     if (!potentialTargets.Contains(target))

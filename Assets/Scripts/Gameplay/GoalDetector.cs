@@ -20,7 +20,9 @@ public class GoalDetector : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Quaffle")
+        if (other.gameObject.tag == "Quaffle" 
+            && (other.gameObject.GetComponent<Quaffle>().takenChaser == null ||
+            other.gameObject.GetComponent<Quaffle>().takenChaser.GetComponent<TeamEntity>().MyTeam != _team))
         {
             GameManager.Instance.QuaffleScored(_otherTeam);
         }

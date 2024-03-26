@@ -708,6 +708,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC_
       objectReference: {fileID: 0}
+    - target: {fileID: 7015035295453498521, guid: 2530f70a3c1e05341b8366fdb0a36d77, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2530f70a3c1e05341b8366fdb0a36d77, type: 3}
 --- !u!1 &741437732
@@ -1865,6 +1869,9 @@ MonoBehaviour:
   gameTimeMinutes: 8
   gameStartCountdown: 1
   quaffleResetPosition: {x: 0, y: 50, z: 0}
+  minSpacePoint: {x: -100, y: -20, z: -100}
+  maxSpacePoint: {x: 100, y: 300, z: 100}
+  forceDistance: 20
   _gameTimeScale: 1
   g_quaffleState: 0
   quaffle: {fileID: 0}
@@ -7017,6 +7024,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6283413762549227780, guid: 313b5ad355550b342985f689a9ad6248, type: 3}
+      propertyPath: velocity
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 6283413762549227781, guid: 313b5ad355550b342985f689a9ad6248, type: 3}
       propertyPath: m_RootOrder
       value: 6

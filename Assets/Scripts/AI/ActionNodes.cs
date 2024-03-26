@@ -117,6 +117,9 @@ namespace BT
         }
         public override NodeState Process()
         {
+            if (GameManager.Instance.quaffle.GetComponent<Quaffle>().takenChaser == null)
+                return NodeState.FAILURE;
+
             Team teamType = GameManager.Instance.quaffle.GetComponent<Quaffle>().takenChaser.GetComponent<TeamEntity>().MyTeam;
             Vector3 circleCenter = GameManager.Instance.quaffle.GetComponent<Quaffle>().takenChaser.transform.position;
 
@@ -201,8 +204,8 @@ namespace BT
         public override NodeState Process()
         {
             QuaffleState curState = GameManager.Instance.g_quaffleState;
-
-            if (curState == QuaffleState.Space)
+            bool isChaseValid = GameManager.Instance.quaffle.GetComponent<Quaffle>().IsChaserValidForCurrentBall(actor.gameObject);
+            if (curState == QuaffleState.Space && isChaseValid)
                 return NodeState.SUCCESS;
             return NodeState.FAILURE;
         }
@@ -220,12 +223,12 @@ namespace BT
             bool isCachedQuaffle = actor.transform.GetComponent<Role>().isCached;
             if (curState != QuaffleState.Space && !isCachedQuaffle)
             {
-                Debug.Log("NodeCheckQuaffleCachedByOthers: true");
+                //Debug.Log("NodeCheckQuaffleCachedByOthers: true");
                 return NodeState.SUCCESS;
             }
             else
             {
-                Debug.Log("NodeCheckQuaffleCachedByOthers: false");
+                //Debug.Log("NodeCheckQuaffleCachedByOthers: false");
                 return NodeState.FAILURE;
             }
         }
@@ -299,12 +302,12 @@ namespace BT
         {
             if (actor.gameObject.GetComponent<Role>().isCached == true)
             {
-                Debug.Log("NodeCheckChaserGotQuaffle: true");
+                //Debug.Log("NodeCheckChaserGotQuaffle: true");
                 return NodeState.SUCCESS;
             }
             else
             {
-                Debug.Log("NodeCheckChaserGotQuaffle: false");
+                //Debug.Log("NodeCheckChaserGotQuaffle: false");
                 return NodeState.FAILURE;
             }
         }
@@ -349,7 +352,7 @@ namespace BT
         {
             Vector3 quafflePosition = GameManager.Instance.quaffle.transform.position;
             Vector3 desiredVector = (quafflePosition - actor.transform.position).normalized;
-            Debug.Log("NodeChaseQuaffle desired position:" + quafflePosition + " desired vector:" + desiredVector);
+            //Debug.Log("NodeChaseQuaffle desired position:" + quafflePosition + " desired vector:" + desiredVector);
 
             (actor as NPCController).AddKinematicVector(desiredVector);
             state = NodeState.RUNNING;
@@ -394,6 +397,7 @@ namespace BT
         public override NodeState Process()
         {
             List<Transform> targetTransforms = actor.GetComponent<CharacterSwitcher>().GetTeamTargets();
+            Debug.Log("current team actor:" + actor.GetComponent<TeamEntity>().MyTeam +  " The target transformation:" + targetTransforms[0].gameObject.tag);
             float throwRange = actor.GetComponent<Role>().throwRadius;
             float distance = Vector3.Distance(targetTransforms[0].position, actor.transform.position);
             if (distance > throwRange)

@@ -15,22 +15,35 @@ public class Quaffle : MonoBehaviour
     public GameObject takenChaser = null;
     public bool isCached = false;
     public float fallingVelocity = 2.0f;
-    public float velocity = 10.0f;
+    public float velocity = 50.0f;
 
+    public bool isToTarget = false;
+    public GameObject lastThrowingNPC = null;
     public List<Vector3> pathPoints = new List<Vector3>();
     private int pathIndex = 0;
 
-    private Vector3 originPos = new Vector3(0, 50, 0);
+    private Vector3 originPos = GameManager.Instance.GetQuaffleResetPosition();
+
+    private void Start()
+    {
+        originPos = GameManager.Instance.GetQuaffleResetPosition();
+        this.transform.position = originPos;
+    }
 
     public void ResetStatus()
     {
+        isToTarget = false;
         pathPoints.Clear();
         pathIndex = 0;
-        originPos = transform.position;
+        originPos = GameManager.Instance.GetQuaffleResetPosition();
+        Debug.Log("originPos:" + originPos);
+        lastThrowingNPC = null;
     }
 
-    public void SetPathPoints(Vector3[] _pathPoints)
+    public void SetPathPoints(Vector3[] _pathPoints, GameObject throwingNPC, bool isToTarget_ = false)
     {
+        isToTarget = isToTarget_;
+        lastThrowingNPC = throwingNPC;
         takenChaser = null;
         isCached = false;
         pathPoints.Add(transform.position);
@@ -39,6 +52,28 @@ public class Quaffle : MonoBehaviour
             pathPoints.Add(_pathPoints[i]);
         }
         Debug.Log("Current Path Points:" + pathPoints.Count);
+    }
+
+    public void Cache(GameObject takenNPC)
+    {
+        isToTarget = false;
+        isCached = true;
+        lastThrowingNPC = null;
+        takenChaser = takenNPC;
+        pathPoints.Clear();
+        pathIndex = 0;
+    }
+
+    public bool IsChaserValidForCurrentBall(GameObject chaser)
+    {
+        //friend sent it to the target
+        if (pathPoints.Count != 0 && lastThrowingNPC != null && lastThrowingNPC.gameObject.tag == chaser.tag && isToTarget)
+            return false;
+
+        //there is no need for the chaser to cache the ball throwed by himself
+        if (pathPoints.Count != 0 && lastThrowingNPC == chaser)
+            return false;
+        return true;
     }
 
     // Update is called once per frame
@@ -50,8 +85,7 @@ public class Quaffle : MonoBehaviour
             if (pathPoints.Count != 0)
             {
 
-                Debug.Log("the path points:" + pathPoints.Count);
-
+                //Debug.Log("the path points:" + pathPoints.Count);
                 for (int i = 1; i < pathPoints.Count; ++i)
                 {
                     Debug.DrawLine(pathPoints[i-1], pathPoints[i], Color.red);
@@ -62,7 +96,7 @@ public class Quaffle : MonoBehaviour
                 }
 
                 transform.position = Vector3.MoveTowards(transform.position,
-                    pathPoints[pathIndex], 50.0f * Time.deltaTime);
+                    pathPoints[pathIndex], velocity * Time.deltaTime);
                 if (Vector3.Distance(pathPoints[pathIndex], transform.position) < 0.00001f)
                 {
                     pathIndex = (pathIndex + 1);
@@ -70,8 +104,9 @@ public class Quaffle : MonoBehaviour
             }
             else
             {
-                if (originPos == new Vector3(0, 50, 0))
-                    originPos = transform.position;
+                //Debug.Log("current position:" + transform.position + " origin position:" + originPos);
+                //if (originPos == GameManager.Instance.GetQuaffleResetPosition())
+                //    originPos = transform.position;
                 float sinValue = Mathf.Sin(Time.fixedTime);
                 Vector3 newPos = originPos;
                 newPos.y += sinValue;
@@ -82,7 +117,7 @@ public class Quaffle : MonoBehaviour
         {
             //float after the path finish
             transform.position = takenChaser.transform.position + takenChaser.transform.right;
-            originPos = new Vector3(0, 50, 0);
+            //originPos = GameManager.Instance.GetQuaffleResetPosition();
         }
     }
 }

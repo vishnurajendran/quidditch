@@ -24,7 +24,14 @@ public class GameManager : SingletonBehaviour<GameManager>
     [SerializeField]
     private int gameStartCountdown = 3;
     [SerializeField]
-    private Vector3 quaffleResetPosition = new Vector3(0, 50.0f, 0);
+    private Vector3 quaffleResetPosition = new Vector3(0, 100.0f, 0);
+    [SerializeField]
+    private Vector3 minSpacePoint = new Vector3(-100, 0, -100);
+    [SerializeField]
+    private Vector3 maxSpacePoint = new Vector3(100, 300, 100);
+    [SerializeField]
+    private float forceDistance = 20.0f;
+
 
     [Header("Testing only"),SerializeField]
     private float _gameTimeScale = 2;
@@ -43,6 +50,7 @@ public class GameManager : SingletonBehaviour<GameManager>
     
     // Indicates if Game Started;
     public bool GameStarted { get; private set; }
+
 
     private void Start()
     {
@@ -98,11 +106,38 @@ public class GameManager : SingletonBehaviour<GameManager>
         StartCoroutine(GameTimer());
     }
 
+    public Vector3 GetMaxSpacePoint()
+    {
+        return maxSpacePoint;
+    }
+
+    public Vector3 GetMaxSpacePointTakenForce()
+    {
+        return maxSpacePoint - new Vector3(forceDistance, forceDistance, forceDistance);
+    }
+
+    public float GetForceDistance()
+    {
+        return forceDistance;
+    }
+
+    public Vector3 GetMinSpacePoint()
+    {
+        return minSpacePoint;
+    }
+
+    public Vector3 GetMinSpacePointTakenForce()
+    {
+        return minSpacePoint + new Vector3(forceDistance, forceDistance, forceDistance);
+    }
+
     public void ResetQuafflePosition()
     {
         quaffle.transform.position = quaffleResetPosition;
         quaffle.GetComponent<Quaffle>().ResetStatus();
     }
+
+    public Vector3 GetQuaffleResetPosition() { return quaffleResetPosition; }
 
     private IEnumerator StartGameBeginCountdown()
     { 

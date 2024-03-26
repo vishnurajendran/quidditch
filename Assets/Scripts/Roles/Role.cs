@@ -37,7 +37,7 @@ public class Role : MonoBehaviour
         for(int i =0;  i < GameManager.Instance.Bludges.Count; ++i)
         {
             //todo:optimize the AI logic in here, rightnow we ignore the bludger is in path
-            if (!GameManager.Instance.Bludges[i].GetComponent<Bludger>().activeForAttack)
+            if (!GameManager.Instance.Bludges[i].GetComponent<Bludger>().IsThereHasNeedBeat(gameObject))
                 continue;
             float curDistance = Vector3.Distance(GameManager.Instance.Bludges[i].transform.position, transform.position);
             if(curDistance < minDistance)
@@ -110,7 +110,7 @@ public class Role : MonoBehaviour
         if(cachedQuaffle != null && isCached)
         {
             Vector3[] pathPoints = GetThrowPath(transform.position, target.position);
-            cachedQuaffle.GetComponent<Quaffle>().SetPathPoints(pathPoints);
+            cachedQuaffle.GetComponent<Quaffle>().SetPathPoints(pathPoints, gameObject);
             cachedQuaffle = null;
             isCached = false;
         }
@@ -133,8 +133,8 @@ public class Role : MonoBehaviour
     {
         if(focusBludger != null)
         {
-            Vector3[] pathPoints = GetThrowPath(transform.position, position);
-            focusBludger.GetComponent<Bludger>().SetPathPoints(pathPoints);
+            Vector3 dirVector = (position - transform.position).normalized;
+            focusBludger.GetComponent<Bludger>().Beat(gameObject, dirVector);
         }
     }
 
@@ -143,8 +143,7 @@ public class Role : MonoBehaviour
     {
         if (cachedQuaffle == null) return;
         isCached = true;
-        cachedQuaffle.GetComponent<Quaffle>().takenChaser = gameObject;
-        cachedQuaffle.GetComponent<Quaffle>().isCached = true;
+        cachedQuaffle.GetComponent<Quaffle>().Cache(gameObject);
     }
 
     // Update is called once per frame
