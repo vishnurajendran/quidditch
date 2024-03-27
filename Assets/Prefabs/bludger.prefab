@@ -231,6 +231,7 @@ GameObject:
   - component: {fileID: 6283413763022913088}
   - component: {fileID: 6283413763022913087}
   - component: {fileID: 6283413763022913089}
+  - component: {fileID: 6408653143519364033}
   m_Layer: 0
   m_Name: bludger
   m_TagString: Bludger
@@ -336,10 +337,11 @@ MonoBehaviour:
   ceilY: 200
   _graphicToRoll: {fileID: 1048723098}
   _graphicToRollLerpMult: 3
-  _maxRoll: 30
+  _maxRoll: 60
   _moveSpeed: 100
-  _boostMultiplier: 1.5
-  _lookSpeed: 360
+  _boostMultiplier: 3
+  _slowMultiplier: 0.05
+  _lookSpeed: 720
 --- !u!114 &6283413763022913087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,5 +368,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42522e4032625504aafb06c31c0a84fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathPoints: []
   activeForAttack: 1
+  beatDir: {x: 0, y: 0, z: 0}
+  chaseColdTime: 3
+  curColdTime: 0
+  previousBeater: {fileID: 0}
+  hitParticleEffect: {fileID: 7634420434017284396, guid: b9ed127bfed05be4db493ca51e744a76, type: 3}
+--- !u!135 &6408653143519364033
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135812633747684749}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}

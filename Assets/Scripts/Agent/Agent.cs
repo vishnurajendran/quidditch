@@ -66,6 +66,10 @@ namespace Agents
                 Time.deltaTime*_graphicToRollLerpMult);
         }
 
+        public void ResetRigidSpeed(Vector3 speed)
+        {
+            _rb.velocity = speed;
+        }
         public void Move(Vector3 move)
         {
             _inputVec = move;

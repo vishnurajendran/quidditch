@@ -45,7 +45,11 @@ public class Role : MonoBehaviour
     {
         curColdDownInDizziness = dissinessColdDownTime;
         isCached = false;
-        cachedQuaffle.GetComponent<Quaffle>().ReleaseByBludger();
+        if(cachedQuaffle != null)
+        {
+            cachedQuaffle.GetComponent<Quaffle>().ReleaseByBludger();
+            cachedQuaffle = null;
+        }
     }
 
     public bool IsInDizzy()

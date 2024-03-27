@@ -1,8 +1,10 @@
 using AgentControllers;
+using Agents;
 using System.Collections;
 using System.Collections.Generic;
 using Teams;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Bludger : MonoBehaviour
 {
@@ -12,11 +14,25 @@ public class Bludger : MonoBehaviour
     public float curColdTime = 0.0f;
     public GameObject previousBeater = null;
 
+    public GameObject hitParticleEffect;
+
     public void Beat(GameObject beaterObj, Vector3 dirVec)
     {
         beatDir = dirVec;
         previousBeater = beaterObj;
         curColdTime = chaseColdTime;
+        GameObject tmp = GameObject.Instantiate(hitParticleEffect, this.transform.position, this.transform.rotation);
+        GameObject.Destroy(tmp, 3.0f);
+    }
+
+    //if the bludger hit someone, the bludger will ricochet 
+    public void HitRicochet(Vector3 posittion)
+    {
+        beatDir = (this.transform.position - posittion).normalized;
+        curColdTime = chaseColdTime;
+        GetComponent<Agent>().ResetRigidSpeed(beatDir);
+        GameObject tmp = GameObject.Instantiate(hitParticleEffect, this.transform.position, this.transform.rotation);
+        GameObject.Destroy(tmp, 3.0f);
     }
 
     public bool IsThereHasNeedBeat(GameObject beaterNPC)
@@ -95,6 +111,7 @@ public class Bludger : MonoBehaviour
         {
             //Debug.Log("Hit the collider:" + other.name);
             other.transform.parent.parent.GetComponent<Role>().HitByBludger();
+            HitRicochet(other.transform.position);
         }
     }
 

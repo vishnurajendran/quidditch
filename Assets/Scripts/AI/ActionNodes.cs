@@ -368,7 +368,8 @@ namespace BT
         }
         public override NodeState Process()
         {
-            if (actor.GetComponent<Role>().cachedQuaffle != null && actor.GetComponent<Role>().isCached == false)
+            if (actor.GetComponent<Role>().cachedQuaffle != null && actor.GetComponent<Role>().isCached == false
+                && !actor.GetComponent<Role>().IsInDizzy())
                 return NodeState.SUCCESS;
             else
                 return NodeState.FAILURE;

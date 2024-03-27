@@ -24,6 +24,8 @@ public class Quaffle : MonoBehaviour
 
     private Vector3 originPos = GameManager.Instance.GetQuaffleResetPosition();
 
+
+
     private void Start()
     {
         originPos = GameManager.Instance.GetQuaffleResetPosition();

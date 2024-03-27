@@ -32,9 +32,16 @@ public class GameManager : SingletonBehaviour<GameManager>
     [SerializeField]
     private float forceDistance = 20.0f;
 
+   
+
 
     [Header("Testing only"),SerializeField]
     private float _gameTimeScale = 2;
+
+
+    [Header("Testing only"), SerializeField]
+    private bool _gameEnableSides = true;
+
 
     public QuaffleState g_quaffleState = QuaffleState.Space;
     public GameObject quaffle = null;
@@ -97,10 +104,11 @@ public class GameManager : SingletonBehaviour<GameManager>
         enumValues.Remove(side1team);
         var side2team = enumValues[0];
         
-        
-        SidesManager.Instance.AssignTeams(side1team,side1team==_playerTeam, 
-            side2team, side2team == _playerTeam, _playerStartType);
-       
+        if(_gameEnableSides)
+        {
+            SidesManager.Instance.AssignTeams(side1team, side1team == _playerTeam,
+                    side2team, side2team == _playerTeam, _playerStartType);
+        }
 
         StartCoroutine(StartGameBeginCountdown());
         StartCoroutine(GameTimer());
