@@ -7,6 +7,7 @@ public class IKController : MonoBehaviour
 {
     public Transform SweepHoldingPoint = null;
     public Transform CacheBallPoint = null;
+    public Transform LookForwardPoint = null;
     public Transform leftHandObj = null;
     public Transform rightHandObj = null;
     private Animator avatar;
@@ -59,12 +60,18 @@ public class IKController : MonoBehaviour
         {
             if(playerType == PlayerType.Chaser)
             {
+                avatar.SetLookAtWeight(1.0f);
+                if (LookForwardPoint != null)
+                {
+                    avatar.SetLookAtPosition(LookForwardPoint.position);
+                }
+
                 avatar.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1.0f);
                 avatar.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1.0f);
                 avatar.SetIKPositionWeight(AvatarIKGoal.RightHand, 1.0f);
                 avatar.SetIKRotationWeight(AvatarIKGoal.RightHand, 1.0f);
 
-                //avatar.SetLookAtWeight(1.0f, 0.3f, 0.6f, 1.0f, 0.5f);
+                //
                 if (leftHandObj != null)
                 {
                     avatar.SetIKPosition(AvatarIKGoal.LeftHand, leftHandObj.position);
@@ -75,6 +82,19 @@ public class IKController : MonoBehaviour
                     avatar.SetIKPosition(AvatarIKGoal.RightHand, rightHandObj.position);
                     avatar.SetIKRotation(AvatarIKGoal.RightHand, rightHandObj.rotation);
                 }
+            }
+            else if(playerType == PlayerType.Beater)
+            {
+                avatar.SetLookAtWeight(1.0f);
+                if (LookForwardPoint != null)
+                {
+                    avatar.SetLookAtPosition(LookForwardPoint.position);
+                }
+               
+                avatar.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
+                avatar.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0);
+                avatar.SetIKPositionWeight(AvatarIKGoal.RightHand, 0);
+                avatar.SetIKRotationWeight(AvatarIKGoal.RightHand, 0);
             }
             else
             {
