@@ -127,7 +127,7 @@ public class Quaffle : MonoBehaviour
         else
         {
             //float after the path finish
-            transform.position = takenChaser.transform.position + takenChaser.transform.right;
+            transform.position = takenChaser.GetComponent<Role>().quaffleFollowPoint.transform.position;
             //originPos = GameManager.Instance.GetQuaffleResetPosition();
         }
     }

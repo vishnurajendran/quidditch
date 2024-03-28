@@ -15,6 +15,7 @@ public class Role : MonoBehaviour
     [SerializeField] public float guardeCircleRadius = 25.0f;
     [SerializeField] public float escapeBuldgerRadius = 35.0f;
     [SerializeField] public GameObject cachedQuaffle = null;
+    [SerializeField] public GameObject quaffleFollowPoint = null;
     [SerializeField] public bool isCached = false;
     [SerializeField] public List<Transform> friendChaser = new List<Transform>();
     [SerializeField] public List<Transform> friendBeater = new List<Transform>();
@@ -40,6 +41,7 @@ public class Role : MonoBehaviour
 
     private PlayerType playerType;
 
+    private Transform selectedTarget;
 
     public void HitByBludger()
     {
@@ -49,6 +51,7 @@ public class Role : MonoBehaviour
         {
             cachedQuaffle.GetComponent<Quaffle>().ReleaseByBludger();
             cachedQuaffle = null;
+            GetComponent<AnimationController>().NormalState();
         }
     }
 
@@ -95,11 +98,13 @@ public class Role : MonoBehaviour
         return GetComponent<AgentUserController>().enabled;
     }
 
+
     // Start is called before the first frame update
     void Start()
     {
         playerType = GetComponent<TeamEntity>().MyPlayerType;
         InitialFriendsInformation();
+        GetComponent<AnimationController>().InitRoles(playerType);
     }
 
     public static Vector3 GetBezierPoint(float t, Vector3 start, Vector3 center, Vector3 end)
@@ -121,9 +126,17 @@ public class Role : MonoBehaviour
         return path;
     }
 
+    public void PassQuaffleByAnimation()
+    {
+        if (cachedQuaffle != null && isCached)
+        {
+            selectedTarget = GetComponent<CharacterSwitcher>().selected;
+            GetComponent<AnimationController>().ThrowBall();
+        }
+    }
+
     public void PassQuaffle()
     {
-        Transform selectedTarget = GetComponent<CharacterSwitcher>().selected;
         Debug.Log("PassQuaffle:" + (selectedTarget != null));
         if (selectedTarget != null)
         {
@@ -170,6 +183,7 @@ public class Role : MonoBehaviour
         if (cachedQuaffle == null) return;
         isCached = true;
         cachedQuaffle.GetComponent<Quaffle>().Cache(gameObject);
+        GetComponent<AnimationController>().CatchTheBall();
     }
 
     // Update is called once per frame
@@ -203,7 +217,7 @@ public class Role : MonoBehaviour
                 }
                 else if (isCached)
                 {
-                    PassQuaffle();
+                    PassQuaffleByAnimation();
                 }
             }
         }
@@ -213,7 +227,7 @@ public class Role : MonoBehaviour
             
             if (Input.GetKeyUp(KeyCode.F))
             {
-               //todo: player logic
+                GetComponent<AnimationController>().HitBallAnimation();
             }
         }
 
