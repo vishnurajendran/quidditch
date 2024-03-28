@@ -177,6 +177,31 @@ public class Role : MonoBehaviour
         }
     }
 
+    public void ActiveBeatBludger()
+    {
+        if(focusBludger != null)
+        {
+            //check the current beat range
+            if (IsBeatAvailable())
+            {
+                //if selected an enemy, then beat the ball to the enemy
+                if(GetComponent<CharacterSwitcher>().selected != null && GetComponent<CharacterSwitcher>().selected.GetComponent<TeamEntity>() &&
+                    GetComponent<CharacterSwitcher>().selected.GetComponent<TeamEntity>().MyTeam != GetComponent<TeamEntity>().MyTeam)
+                {
+                    Vector3 target = GetComponent<CharacterSwitcher>().selected.position;
+                    Vector3 dirVector = (target - transform.position).normalized;
+                    focusBludger.GetComponent<Bludger>().Beat(gameObject, dirVector);
+                }
+                else
+                {
+                    Vector3 dirVector = (focusBludger.transform.position - transform.position).normalized;
+                    focusBludger.GetComponent<Bludger>().Beat(gameObject, dirVector);
+                }
+            }
+        }
+    }
+
+
     //get the quaffle
     public void TakeQuaffle()
     {
@@ -224,12 +249,28 @@ public class Role : MonoBehaviour
 
         if(playerType == PlayerType.Beater)
         {
-            
-            if (Input.GetKeyUp(KeyCode.F))
+            //be poised to beat the bludger
+            if (Input.GetMouseButton(0))
             {
                 GetComponent<AnimationController>().HitBallAnimation();
             }
+            
+            //hit the bludger
+            if(Input.GetMouseButtonUp(0))
+            {
+                GetComponent<AnimationController>().ReleaseHitBallAnimation();
+                ActiveBeatBludger();
+            }
+
+            /*
+            if (Input.GetKeyUp(KeyCode.F))
+            {
+                
+            }*/
         }
 
     }
+
+
+
 }

@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using Teams;
 using UnityEngine;
 
 namespace AgentControllers
@@ -11,6 +12,20 @@ namespace AgentControllers
         [SerializeField] private float ceilY;
 
         private Vector3 curDirection = Vector3.zero;
+
+        private void OnEnable()
+        {
+            if(GetComponent<TeamEntity>().MyPlayerType == Gameplay.PlayerType.Beater)
+            {
+                GetComponent<BTBeater>().enabled = true;
+                GetComponent<BTChaser>().enabled = false;
+            }
+            else if (GetComponent<TeamEntity>().MyPlayerType == Gameplay.PlayerType.Chaser)
+            {
+                GetComponent<BTBeater>().enabled = false;
+                GetComponent<BTChaser>().enabled = true;
+            }
+        }
 
         private float CalculateHorizontal()
         {

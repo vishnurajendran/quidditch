@@ -15,6 +15,8 @@ namespace AgentControllers
         {
             GameObject.FindObjectOfType<CinemachineFreeLook>().LookAt = camTarget;
             GameObject.FindObjectOfType<CinemachineFreeLook>().Follow = camTarget;
+            GetComponent<BTBeater>().enabled = false;
+            GetComponent<BTChaser>().enabled = false;
         }
 
         protected override void Start()

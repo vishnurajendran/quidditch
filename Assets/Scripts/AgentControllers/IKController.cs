@@ -13,6 +13,8 @@ public class IKController : MonoBehaviour
     private Animator avatar;
     public bool ikActive = true;
     private PlayerType playerType = PlayerType.Chaser;
+    private float leftHandWeight = 1.0f;
+    private float rightHandWeight = 1.0f;
 
     public void SetPlayerType(PlayerType playerType_)
     {
@@ -44,10 +46,26 @@ public class IKController : MonoBehaviour
         rightHandObj = CacheBallPoint;  
     }
 
+    public void SetLeftHandIKWeight(float weight)
+    {
+        leftHandWeight = weight;
+    }
+
+    public void SetRightHandIKWeight(float weight)
+    {
+        rightHandWeight = weight;
+    }
+
+
     void Start()
     {
         avatar = GetComponent<Animator>();
         SetNormalIKState();
+
+        avatar.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1.0f);
+        avatar.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1.0f);
+        avatar.SetIKPositionWeight(AvatarIKGoal.RightHand, 1.0f);
+        avatar.SetIKRotationWeight(AvatarIKGoal.RightHand, 1.0f);
     }
 
     void OnAnimatorIK(int layerIndex)
@@ -90,11 +108,14 @@ public class IKController : MonoBehaviour
                 {
                     avatar.SetLookAtPosition(LookForwardPoint.position);
                 }
-               
-                avatar.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
-                avatar.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0);
-                avatar.SetIKPositionWeight(AvatarIKGoal.RightHand, 0);
-                avatar.SetIKRotationWeight(AvatarIKGoal.RightHand, 0);
+                avatar.SetIKPositionWeight(AvatarIKGoal.LeftHand, leftHandWeight);
+                avatar.SetIKRotationWeight(AvatarIKGoal.LeftHand, leftHandWeight);
+
+                if (leftHandObj != null)
+                {
+                    avatar.SetIKPosition(AvatarIKGoal.LeftHand, leftHandObj.position);
+                    avatar.SetIKRotation(AvatarIKGoal.LeftHand, leftHandObj.rotation);
+                }
             }
             else
             {

@@ -482,6 +482,7 @@ namespace BT
         }
         public override NodeState Process()
         {
+            actor.GetComponent<AnimationController>().HitBallAnimation();
             Vector3 desiredVector = actor.GetComponent<Role>().focusBludger.transform.position - actor.transform.position;
             (actor as NPCController).AddKinematicVector(desiredVector.normalized);
             return NodeState.RUNNING;
@@ -534,6 +535,7 @@ namespace BT
         public override NodeState Process()
         {
             Vector3 position = GetBeatTargetPosition();
+            actor.GetComponent<AnimationController>().ReleaseHitBallAnimation();
             actor.GetComponent<Role>().BeatBludger(position);
             return NodeState.SUCCESS;
         }

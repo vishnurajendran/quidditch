@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b206d95231ab17b44a79cb1a240b489c
+guid: 78352b51eaefe0d4fafcfadd1ce5a45b
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
@@ -39,15 +39,15 @@ ModelImporter:
       name: Baseball Hit
       takeName: mixamo.com
       internalID: 0
-      firstFrame: 22
-      lastFrame: 45
+      firstFrame: 21
+      lastFrame: 22
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 1
       loopBlendOrientation: 1
       loopBlendPositionY: 1

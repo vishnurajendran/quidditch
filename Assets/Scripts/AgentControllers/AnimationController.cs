@@ -22,6 +22,13 @@ public class AnimationController : MonoBehaviour
     public void HitBallAnimation()
     {
         animator.SetBool("Hit", true);
+        ikController.SetLeftHandIKWeight(0.0f);
+    }
+
+    public void ReleaseHitBallAnimation()
+    {
+        animator.SetBool("Hit", false);
+        ikController.SetLeftHandIKWeight(1.0f);
     }
 
     public void NormalState()
