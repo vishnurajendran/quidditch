@@ -114,7 +114,9 @@ MonoBehaviour:
   takenChaser: {fileID: 0}
   isCached: 0
   fallingVelocity: 0.001
-  velocity: 10
+  velocity: 40
+  isToTarget: 0
+  lastThrowingNPC: {fileID: 0}
   pathPoints: []
 --- !u!54 &779030676
 Rigidbody:

@@ -31,9 +31,10 @@ public class Role : MonoBehaviour
     [SerializeField] public GameObject cachedGoldenSnitch = null;
     [SerializeField] public bool isCachedGoldenSnich = false;
 
-
-
+    //particle effect
     public GameObject dizzyParticleEffect;
+    public GameObject takeBallParticleEffect;
+    public GameObject beatBallParticleEffect;
 
     public float curColdDownInDizziness = 0.0f;
     public float dissinessColdDownTime = 5.0f;
@@ -178,6 +179,8 @@ public class Role : MonoBehaviour
         {
             Vector3 dirVector = (position - transform.position).normalized;
             focusBludger.GetComponent<Bludger>().Beat(gameObject, dirVector);
+            GameObject tmpObj = GameObject.Instantiate(beatBallParticleEffect, focusBludger.transform.position, new Quaternion());
+            GameObject.Destroy(tmpObj, 2.0f);
         }
     }
 
@@ -205,7 +208,6 @@ public class Role : MonoBehaviour
         }
     }
 
-
     //get the quaffle
     public void TakeQuaffle()
     {
@@ -213,6 +215,8 @@ public class Role : MonoBehaviour
         isCached = true;
         cachedQuaffle.GetComponent<Quaffle>().Cache(gameObject);
         GetComponent<AnimationController>().CatchTheBall();
+        GameObject tmpObj = GameObject.Instantiate(takeBallParticleEffect, cachedQuaffle.transform.position, new Quaternion());
+        GameObject.Destroy(tmpObj, 2.0f);
     }
 
     //get the golden snitch
@@ -222,6 +226,8 @@ public class Role : MonoBehaviour
         isCachedGoldenSnich = true;
         cachedGoldenSnitch.GetComponent<GoldenSnich>().Catch(gameObject);
         GetComponent<AnimationController>().CatchTheBall();
+        GameObject tmpObj = GameObject.Instantiate(takeBallParticleEffect, cachedQuaffle.transform.position, new Quaternion());
+        GameObject.Destroy(tmpObj, 2.0f);
     }
 
     // Update is called once per frame
