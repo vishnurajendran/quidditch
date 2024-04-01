@@ -38,6 +38,7 @@ public class IKController : MonoBehaviour
     {
         leftHandObj = SweepHoldingPoint;
         rightHandObj = SweepHoldingPoint;
+        ikActive = true;
     }
 
     public void SetCacheBallIKState()
@@ -76,7 +77,7 @@ public class IKController : MonoBehaviour
 
         if (ikActive)
         {
-            if(playerType == PlayerType.Chaser)
+            if(playerType == PlayerType.Chaser || playerType == PlayerType.Seeker)
             {
                 avatar.SetLookAtWeight(1.0f);
                 if (LookForwardPoint != null)

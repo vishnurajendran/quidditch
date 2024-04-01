@@ -27,10 +27,13 @@ public class Role : MonoBehaviour
     [SerializeField] public float guardeRadius = 35.0f;
     [SerializeField] public float beatStrength = 30.0f;
 
+    //Parameters for seeker
+    [SerializeField] public GameObject cachedGoldenSnitch = null;
+    [SerializeField] public bool isCachedGoldenSnich = false;
+
+
 
     public GameObject dizzyParticleEffect;
-
-
 
     public float curColdDownInDizziness = 0.0f;
     public float dissinessColdDownTime = 5.0f;
@@ -53,6 +56,7 @@ public class Role : MonoBehaviour
             cachedQuaffle = null;
             GetComponent<AnimationController>().NormalState();
         }
+
     }
 
     public bool IsInDizzy()
@@ -211,6 +215,15 @@ public class Role : MonoBehaviour
         GetComponent<AnimationController>().CatchTheBall();
     }
 
+    //get the golden snitch
+    public void TakeGoldenSnitch()
+    {
+        if(cachedGoldenSnitch == null) return;
+        isCachedGoldenSnich = true;
+        cachedGoldenSnitch.GetComponent<GoldenSnich>().Catch(gameObject);
+        GetComponent<AnimationController>().CatchTheBall();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -261,12 +274,17 @@ public class Role : MonoBehaviour
                 GetComponent<AnimationController>().ReleaseHitBallAnimation();
                 ActiveBeatBludger();
             }
+        }
 
-            /*
+        if(playerType == PlayerType.Seeker)
+        {
             if (Input.GetKeyUp(KeyCode.F))
             {
-                
-            }*/
+                if (!isCachedGoldenSnich && cachedGoldenSnitch != null)
+                {
+                    TakeGoldenSnitch();
+                }
+            }
         }
 
     }

@@ -500,11 +500,11 @@ GameObject:
   - component: {fileID: 9010853105390204063}
   - component: {fileID: 3600615632040524371}
   - component: {fileID: 4149412443235668011}
+  - component: {fileID: 6109491919870410281}
   - component: {fileID: 4419224925387632962}
   - component: {fileID: 1626788968689847196}
   - component: {fileID: 4629785767014851736}
   - component: {fileID: 3154732616330564823}
-  - component: {fileID: 73945742}
   - component: {fileID: 2098546418}
   m_Layer: 0
   m_Name: Player
@@ -608,6 +608,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b964f6f4c8d062b45b93310c186951a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6109491919870410281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2865472611429576341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37da1180210457b46b978bd47d354dd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4419224925387632962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -621,7 +633,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _team: 1
-  _playerType: 4
+  _playerType: 3
 --- !u!114 &1626788968689847196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -629,7 +641,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2865472611429576341}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0b3fed2ebe740a7805fec7a26494a1c, type: 3}
   m_Name: 
@@ -642,7 +654,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2865472611429576341}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc9aa67fa7a39414eb632f08019da93f, type: 3}
   m_Name: 
@@ -675,22 +687,12 @@ MonoBehaviour:
   beatRange: 3
   guardeRadius: 35
   beatStrength: 80
+  cachedGoldenSnitch: {fileID: 0}
+  isCachedGoldenSnich: 0
   dizzyParticleEffect: {fileID: 7042460136962542568}
   curColdDownInDizziness: 0
   dissinessColdDownTime: 5
   throwIndicator: {fileID: 0}
---- !u!114 &73945742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2865472611429576341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b964f6f4c8d062b45b93310c186951a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2098546418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1049,7 +1051,7 @@ GameObject:
   - component: {fileID: 6986093385934413669}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Team1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

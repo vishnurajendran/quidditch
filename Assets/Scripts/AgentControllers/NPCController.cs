@@ -15,16 +15,7 @@ namespace AgentControllers
 
         private void OnEnable()
         {
-            if(GetComponent<TeamEntity>().MyPlayerType == Gameplay.PlayerType.Beater)
-            {
-                GetComponent<BTBeater>().enabled = true;
-                GetComponent<BTChaser>().enabled = false;
-            }
-            else if (GetComponent<TeamEntity>().MyPlayerType == Gameplay.PlayerType.Chaser)
-            {
-                GetComponent<BTBeater>().enabled = false;
-                GetComponent<BTChaser>().enabled = true;
-            }
+            GetComponent<TeamEntity>().BTUpdate();
         }
 
         private float CalculateHorizontal()

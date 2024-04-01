@@ -21,6 +21,34 @@ namespace Teams
                 return Team.Team_1;
         }
 
+        public void BTUpdate()
+        {
+            if (GetComponent<AgentUserController>().enabled)
+            {
+                GetComponent<BTBeater>().enabled = false;
+                GetComponent<BTSeeker>().enabled = false;
+                GetComponent<BTChaser>().enabled = false;
+            }
+            if (MyPlayerType == PlayerType.Chaser)
+            {
+                GetComponent<BTBeater>().enabled = false;
+                GetComponent<BTSeeker>().enabled = false;
+                GetComponent<BTChaser>().enabled = true;
+            }
+            else if (MyPlayerType == PlayerType.Beater)
+            {
+                GetComponent<BTChaser>().enabled = false;
+                GetComponent<BTSeeker>().enabled = false;
+                GetComponent<BTBeater>().enabled = true;
+            }
+            else if (MyPlayerType == PlayerType.Seeker)
+            {
+                GetComponent<BTChaser>().enabled = false;
+                GetComponent<BTBeater>().enabled = false;
+                GetComponent<BTSeeker>().enabled = true;
+            }
+        }
+
         public void UpdateRoleComponent()
         {
             GetComponent<NPCController>().enabled = true;
@@ -28,15 +56,21 @@ namespace Teams
             if(MyPlayerType == PlayerType.Chaser)
             {
                 GetComponent<BTBeater>().enabled = false;
+                GetComponent<BTSeeker>().enabled = false;
                 GetComponent<BTChaser>().enabled = true;
             }
             else if(MyPlayerType == PlayerType.Beater)
             {
                 GetComponent<BTChaser>().enabled = false;
+                GetComponent<BTSeeker>().enabled = false;
                 GetComponent<BTBeater>().enabled = true;
             }
-
-
+            else if(MyPlayerType == PlayerType.Seeker)
+            {
+                GetComponent<BTChaser>().enabled = false;
+                GetComponent<BTBeater>().enabled = false;
+                GetComponent<BTSeeker>().enabled = true;
+            }
         }
 
         public void SetPlayerType(PlayerType playerType)

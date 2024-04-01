@@ -9,6 +9,12 @@ public class CheckBall : MonoBehaviour
         if(other.tag == "Quaffle") {
             transform.parent.parent.GetComponent<Role>().cachedQuaffle = other.gameObject;
         }
+
+        if(other.tag == "GoldenSnitch")
+        {
+            transform.parent.parent.GetComponent<Role>().cachedGoldenSnitch = other.gameObject;
+        }
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -16,6 +22,11 @@ public class CheckBall : MonoBehaviour
         if (other.tag == "Quaffle")
         {
             transform.parent.parent.GetComponent<Role>().cachedQuaffle = null;
+        }
+
+        if(other.tag == "GoldenSnitch")
+        {
+            transform.parent.parent.GetComponent<Role>().cachedGoldenSnitch = null;
         }
     }
 }

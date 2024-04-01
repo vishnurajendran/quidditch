@@ -50,7 +50,6 @@ namespace Teams
             for(int i = 0;i < team2targets.Length; i++)
                 _targetsByTeam[Team.Team_2].Add(team2targets[i].transform);
         }
-
         
         public static void RegisterToTeam(Team team, Transform transform)
         {
@@ -142,6 +141,5 @@ namespace Teams
             var list = _targetsByTeam[team];
             return list;
         }
-
     }
 }

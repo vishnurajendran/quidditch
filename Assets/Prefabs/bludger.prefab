@@ -338,7 +338,7 @@ MonoBehaviour:
   _graphicToRoll: {fileID: 1048723098}
   _graphicToRollLerpMult: 3
   _maxRoll: 60
-  _moveSpeed: 100
+  _moveSpeed: 300
   _boostMultiplier: 3
   _slowMultiplier: 0.05
   _lookSpeed: 720

@@ -41,21 +41,10 @@ public class Bludger : MonoBehaviour
             return false;
         return true;
     }
-
-    private void Start()
-    {
-       
-
-    }
-
     private Transform GetClosestPlayer()
     {
         List<Transform> team1Transforms = TeamManager.GetPlayersOfTeam(Team.Team_1);
         List<Transform> team2Transforms = TeamManager.GetPlayersOfTeam(Team.Team_2);
-
-        //Debug.Log("the bludger start function1:" + team1Transforms.Count);
-        //Debug.Log("the bludger start function2:" + team2Transforms.Count);
-
 
         float minDistance = float.PositiveInfinity;
         Transform res = null;
@@ -109,7 +98,7 @@ public class Bludger : MonoBehaviour
         if((other.tag == "Team1" || other.tag == "Team2") && 
             !other.transform.parent.parent.GetComponent<Role>().IsInDizzy())
         {
-            //Debug.Log("Hit the collider:" + other.name);
+            Debug.Log("Hit the collider:" + other.name);
             other.transform.parent.parent.GetComponent<Role>().HitByBludger();
             HitRicochet(other.transform.position);
         }

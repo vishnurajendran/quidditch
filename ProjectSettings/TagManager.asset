@@ -11,6 +11,7 @@ TagManager:
   - Team1Target
   - Team2Target
   - Bludger
+  - GoldenSnitch
   layers:
   - Default
   - TransparentFX

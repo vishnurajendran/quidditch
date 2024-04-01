@@ -46,6 +46,7 @@ public class GameManager : SingletonBehaviour<GameManager>
     public QuaffleState g_quaffleState = QuaffleState.Space;
     public GameObject quaffle = null;
     public List<GameObject> Bludges = new List<GameObject>();
+    public GameObject goldenSnitch = null;
 
 
 
@@ -65,6 +66,7 @@ public class GameManager : SingletonBehaviour<GameManager>
         StartGame();
 
         quaffle = GameObject.FindGameObjectWithTag("Quaffle");
+        goldenSnitch = GameObject.FindGameObjectWithTag("GoldenSnitch");
         GameObject[] bludgers = GameObject.FindGameObjectsWithTag("Bludger");
         for(int i =0; i < bludgers.Length; i++)
         {

@@ -574,5 +574,63 @@ namespace BT
         }
     }
 
+    public class NodeSeekGoldenSnitch : BaseNode
+    {
+        public NodeSeekGoldenSnitch(AgentController actor_)
+            : base(actor_)
+        {
+        }
 
+        public override NodeState Process()
+        {
+            Vector3 goldenSnitchPosition = GameManager.Instance.goldenSnitch.transform.position;
+            Vector3 desiredDir = (goldenSnitchPosition - actor.transform.position).normalized;
+            (actor as NPCController).AddKinematicVector(desiredDir);
+            state = NodeState.RUNNING;
+            return state;
+        }
+    }
+    public class NodeCheckGoldenSnitchState : BaseNode
+    {
+        public NodeCheckGoldenSnitchState(AgentController actor_)
+           : base(actor_)
+        {
+        }
+        public override NodeState Process()
+        {
+            bool isCached = GameManager.Instance.goldenSnitch.GetComponent<GoldenSnich>().isCached;
+            if (isCached)
+                return NodeState.FAILURE;
+            return NodeState.SUCCESS;
+        }
+    }
+
+    public class NodeCheckCanTakeGoldenSnitch : BaseNode
+    {
+        public NodeCheckCanTakeGoldenSnitch(AgentController actor_)
+        : base(actor_)
+        {
+        }
+        public override NodeState Process()
+        {
+            if (actor.GetComponent<Role>().cachedGoldenSnitch != null && actor.GetComponent<Role>().isCachedGoldenSnich == false
+                && !actor.GetComponent<Role>().IsInDizzy())
+                return NodeState.SUCCESS;
+            else
+                return NodeState.FAILURE;
+        }
+    }
+
+    public class NodeTakeGoldenSnitch : BaseNode
+    {
+        public NodeTakeGoldenSnitch(AgentController actor_)
+        : base(actor_)
+        {
+        }
+        public override NodeState Process()
+        {
+            actor.GetComponent<Role>().TakeGoldenSnitch();
+            return NodeState.SUCCESS;
+        }
+    }
 }
