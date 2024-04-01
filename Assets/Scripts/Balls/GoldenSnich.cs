@@ -12,7 +12,6 @@ public class GoldenSnich : MonoBehaviour
     public GameObject takenSeeker = null;
     public bool isCached = false;
     public GameObject[] pathWayPoints;
-    public Vector3[] wayPoints;
     public float wayPointsBuildDistance = 10.0f;
     public int index = 0;
     public float curWaitingTime = 0.0f; 
@@ -25,7 +24,6 @@ public class GoldenSnich : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GenerateWaypoints();
         GainSeekers();
     }
 
@@ -48,15 +46,6 @@ public class GoldenSnich : MonoBehaviour
         {
             seekers.Add(team2Seekers[i]);
         }
-    }
-
-    private void GenerateWaypoints()
-    {
-        wayPoints = new Vector3[3];
-
-        wayPoints[0] = this.transform.position + new Vector3(0.0f, wayPointsBuildDistance * 0.5f, 0.0f);
-        wayPoints[1] = this.transform.position + new Vector3(wayPointsBuildDistance, -wayPointsBuildDistance * 0.5f, 0.0f);
-        wayPoints[2] = this.transform.position + new Vector3(0.0f, -wayPointsBuildDistance * 0.5f, wayPointsBuildDistance);
     }
 
     public bool IsSeekerNearHere()

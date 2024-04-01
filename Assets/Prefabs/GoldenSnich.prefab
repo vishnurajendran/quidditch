@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   floorY: 2
-  ceilY: 50
+  ceilY: 300
   _graphicToRoll: {fileID: 355953607130229088}
   _graphicToRollLerpMult: 3
   _maxRoll: 30
@@ -87,7 +87,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   floorY: 2
-  ceilY: 50
+  ceilY: 300
 --- !u!114 &7472034448607935965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,10 +104,11 @@ MonoBehaviour:
   isCached: 0
   pathWayPoints:
   - {fileID: 0}
-  wayPoints:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   wayPointsBuildDistance: 10
   index: 0
   curWaitingTime: 0
