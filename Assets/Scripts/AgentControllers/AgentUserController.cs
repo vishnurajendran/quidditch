@@ -17,6 +17,8 @@ namespace AgentControllers
             GameObject.FindObjectOfType<CinemachineFreeLook>().Follow = camTarget;
             GetComponent<BTBeater>().enabled = false;
             GetComponent<BTChaser>().enabled = false;
+            GetComponent<BTSeeker>().enabled = false;
+            GetComponent<BTKeeper>().enabled = false;
         }
 
         protected override void Start()
@@ -26,11 +28,20 @@ namespace AgentControllers
             GetComponent<NPCController>().enabled = false;
         }
 
+        //apply dizzy statement to player state
+        public bool CheckIsHitByBludger()
+        {
+            return GetComponent<Role>() && GetComponent<Role>().curColdDownInDizziness > 0.0f;
+        }
+
+
         private void Update()
         {
             if(!GameManager.Instance.GameStarted)
                 return;
-            
+
+            bool slowing = CheckIsHitByBludger();
+
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
             float lift = Input.GetKey(KeyCode.LeftShift) ? 1 : Input.GetKey(KeyCode.LeftControl) ? -1 : 0;
@@ -52,6 +63,7 @@ namespace AgentControllers
             _agent.Move(dir);
             _agent.SetGraphicRollDirection(horizontal);
             _agent.Boost(boost);
+            _agent.Slow(slowing);
         }
     }
 }

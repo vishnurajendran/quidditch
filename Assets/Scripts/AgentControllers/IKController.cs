@@ -77,7 +77,7 @@ public class IKController : MonoBehaviour
 
         if (ikActive)
         {
-            if(playerType == PlayerType.Chaser || playerType == PlayerType.Seeker)
+            if(playerType == PlayerType.Chaser || playerType == PlayerType.Seeker || playerType == PlayerType.Keeper)
             {
                 avatar.SetLookAtWeight(1.0f);
                 if (LookForwardPoint != null)

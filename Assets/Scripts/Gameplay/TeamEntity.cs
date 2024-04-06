@@ -28,24 +28,35 @@ namespace Teams
                 GetComponent<BTBeater>().enabled = false;
                 GetComponent<BTSeeker>().enabled = false;
                 GetComponent<BTChaser>().enabled = false;
+                GetComponent<BTKeeper>().enabled = false;
             }
             if (MyPlayerType == PlayerType.Chaser)
             {
                 GetComponent<BTBeater>().enabled = false;
                 GetComponent<BTSeeker>().enabled = false;
                 GetComponent<BTChaser>().enabled = true;
+                GetComponent<BTKeeper>().enabled = false;
             }
             else if (MyPlayerType == PlayerType.Beater)
             {
                 GetComponent<BTChaser>().enabled = false;
                 GetComponent<BTSeeker>().enabled = false;
                 GetComponent<BTBeater>().enabled = true;
+                GetComponent<BTKeeper>().enabled = false;
             }
             else if (MyPlayerType == PlayerType.Seeker)
             {
                 GetComponent<BTChaser>().enabled = false;
                 GetComponent<BTBeater>().enabled = false;
                 GetComponent<BTSeeker>().enabled = true;
+                GetComponent<BTKeeper>().enabled = false;
+            }
+            else if(MyPlayerType == PlayerType.Keeper)
+            {
+                GetComponent<BTChaser>().enabled = false;
+                GetComponent<BTBeater>().enabled = false;
+                GetComponent<BTSeeker>().enabled = false;
+                GetComponent<BTKeeper>().enabled = true;
             }
         }
 
@@ -53,23 +64,33 @@ namespace Teams
         {
             GetComponent<NPCController>().enabled = true;
             GetComponent<AgentUserController>().enabled = false;
-            if(MyPlayerType == PlayerType.Chaser)
+            if (MyPlayerType == PlayerType.Chaser)
             {
                 GetComponent<BTBeater>().enabled = false;
                 GetComponent<BTSeeker>().enabled = false;
                 GetComponent<BTChaser>().enabled = true;
+                GetComponent<BTKeeper>().enabled = false;
             }
-            else if(MyPlayerType == PlayerType.Beater)
+            else if (MyPlayerType == PlayerType.Beater)
             {
                 GetComponent<BTChaser>().enabled = false;
                 GetComponent<BTSeeker>().enabled = false;
                 GetComponent<BTBeater>().enabled = true;
+                GetComponent<BTKeeper>().enabled = false;
             }
-            else if(MyPlayerType == PlayerType.Seeker)
+            else if (MyPlayerType == PlayerType.Seeker)
             {
                 GetComponent<BTChaser>().enabled = false;
                 GetComponent<BTBeater>().enabled = false;
                 GetComponent<BTSeeker>().enabled = true;
+                GetComponent<BTKeeper>().enabled = false;
+            }
+            else if (MyPlayerType == PlayerType.Keeper)
+            {
+                GetComponent<BTChaser>().enabled = false;
+                GetComponent<BTBeater>().enabled = false;
+                GetComponent<BTSeeker>().enabled = false;
+                GetComponent<BTKeeper>().enabled = true;
             }
         }
 

@@ -39,6 +39,15 @@ namespace AgentControllers
             return TeamManager.GetTargetsOfTeam(GetComponent<TeamEntity>().MyTeam);
         }
 
+        public List<Transform> GetOtherTeamTargets()
+        {
+            Team actorTeamType = GetComponent<TeamEntity>().MyTeam;
+            if(actorTeamType == Team.Team_1)
+                return TeamManager.GetTargetsOfTeam(Team.Team_2);
+            else
+                return TeamManager.GetTargetsOfTeam(Team.Team_1);
+        }
+
         private void FixedUpdate()
         {
             if (!_userController.enabled)

@@ -375,7 +375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 102515472412e354f809623d99aa50f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerStartType: 1
+  _playerStartType: 3
   gameTimeMinutes: 2
   gameStartCountdown: 3
   quaffleResetPosition: {x: 0, y: 100, z: 0}
@@ -6247,6 +6247,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2102922064, guid: 3414126e5e6217e498851924fd461fe5, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4524282805501194105, guid: 3414126e5e6217e498851924fd461fe5, type: 3}
       propertyPath: m_Name
       value: Map

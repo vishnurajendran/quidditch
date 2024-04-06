@@ -37,8 +37,8 @@ namespace Gameplay
         public void SpawnPlayers()
         {
             _players = new List<Transform>();
-            //SpawnPlayer(PlayerType.Seeker, new List<Transform>(){_seekerPosition}, _humanPlayerType==PlayerType.Seeker);
-            //SpawnPlayer(PlayerType.Keeper, new List<Transform>(){_keeperPosition}, _humanPlayerType==PlayerType.Keeper);
+            SpawnPlayer(PlayerType.Seeker, new List<Transform>(){_seekerPosition}, _humanPlayerType==PlayerType.Seeker);
+            SpawnPlayer(PlayerType.Keeper, new List<Transform>(){_keeperPosition}, _humanPlayerType==PlayerType.Keeper);
             SpawnPlayer(PlayerType.Chaser, _chaserPositions, _humanPlayerType==PlayerType.Chaser);
             SpawnPlayer(PlayerType.Beater, _beaterPositions, _humanPlayerType==PlayerType.Beater);
         }

@@ -31,6 +31,13 @@ public class Role : MonoBehaviour
     [SerializeField] public GameObject cachedGoldenSnitch = null;
     [SerializeField] public bool isCachedGoldenSnich = false;
 
+    //Parameters for keeper
+    [SerializeField] public float validRadius = 100.0f;
+    [SerializeField] public float rotateRadius = 40.0f;
+    [SerializeField] public float passDistance = 60.0f;
+    [SerializeField] public float perceptionRadius = 200.0f;
+    [SerializeField] public Transform focusChaser = null;
+
     //particle effect
     public GameObject dizzyParticleEffect;
     public GameObject takeBallParticleEffect;
@@ -62,7 +69,29 @@ public class Role : MonoBehaviour
 
     public bool IsInDizzy()
     {
-        return curColdDownInDizziness > 0.0f;   
+        return curColdDownInDizziness > 0.0f;
+    }
+
+    private void PerceptChaserWithQuaffle()
+    {
+        if (GetComponent<TeamEntity>().MyPlayerType != PlayerType.Keeper) return;
+        GameObject takenChaser = GameManager.Instance.quaffle.GetComponent<Quaffle>().takenChaser;
+        if (takenChaser == null)
+        {
+            focusChaser = null;
+            return;
+        }
+           
+        if (takenChaser.GetComponent<TeamEntity>().MyTeam == GetComponent<TeamEntity>().MyTeam)
+        {
+            focusChaser = null;
+            return;
+        }
+
+        if(Vector3.Distance(takenChaser.transform.position, transform.position) < perceptionRadius)
+            focusChaser = takenChaser.transform;
+        else
+            focusChaser = null;
     }
 
     private void PerceptBludger()
@@ -103,7 +132,6 @@ public class Role : MonoBehaviour
         return GetComponent<AgentUserController>().enabled;
     }
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -143,18 +171,25 @@ public class Role : MonoBehaviour
     public void PassQuaffle()
     {
         Debug.Log("PassQuaffle:" + (selectedTarget != null));
+
+        bool isTarget = selectedTarget.GetComponent<GoalDetector>() == null;
         if (selectedTarget != null)
         {
-            PassQuaffle(selectedTarget);
+            PassQuaffle(selectedTarget, isTarget);
         }
     }
 
-    public void PassQuaffle(Transform target)
+    public void PassQuaffle(Transform target, bool isTarget = false)
     {
-        if(cachedQuaffle != null && isCached)
+        PassQuaffle(target.position, isTarget);
+    }
+
+    public void PassQuaffle(Vector3 position, bool isTarget = false)
+    {
+        if (cachedQuaffle != null && isCached)
         {
-            Vector3[] pathPoints = GetThrowPath(transform.position, target.position);
-            cachedQuaffle.GetComponent<Quaffle>().SetPathPoints(pathPoints, gameObject);
+            Vector3[] pathPoints = GetThrowPath(transform.position, position);
+            cachedQuaffle.GetComponent<Quaffle>().SetPathPoints(pathPoints, gameObject, isTarget);
             cachedQuaffle = null;
             isCached = false;
         }
@@ -212,6 +247,7 @@ public class Role : MonoBehaviour
     public void TakeQuaffle()
     {
         if (cachedQuaffle == null) return;
+        if (cachedQuaffle.GetComponent<Quaffle>().isCached) return;
         isCached = true;
         cachedQuaffle.GetComponent<Quaffle>().Cache(gameObject);
         GetComponent<AnimationController>().CatchTheBall();
@@ -243,9 +279,9 @@ public class Role : MonoBehaviour
             dizzyParticleEffect.SetActive(false);
         }
             
-
         //the npc logic
         PerceptBludger();
+        PerceptChaserWithQuaffle();
 
         if (!IsPlayer()) return;
 
@@ -294,7 +330,4 @@ public class Role : MonoBehaviour
         }
 
     }
-
-
-
 }

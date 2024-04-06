@@ -501,6 +501,7 @@ GameObject:
   - component: {fileID: 3600615632040524371}
   - component: {fileID: 4149412443235668011}
   - component: {fileID: 6109491919870410281}
+  - component: {fileID: 4683925967482548495}
   - component: {fileID: 4419224925387632962}
   - component: {fileID: 1626788968689847196}
   - component: {fileID: 4629785767014851736}
@@ -620,6 +621,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37da1180210457b46b978bd47d354dd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4683925967482548495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2865472611429576341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 403cbe9f49944b64daa4a08f9d7c8778, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4419224925387632962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -632,8 +645,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82381125140d421384fbf09a7d6cd860, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _team: 1
-  _playerType: 3
+  _team: 0
+  _playerType: 0
 --- !u!114 &1626788968689847196
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -689,6 +702,11 @@ MonoBehaviour:
   beatStrength: 80
   cachedGoldenSnitch: {fileID: 0}
   isCachedGoldenSnich: 0
+  validRadius: 100
+  rotateRadius: 40
+  passDistance: 60
+  perceptionRadius: 200
+  focusChaser: {fileID: 0}
   dizzyParticleEffect: {fileID: 7042460136962542568}
   takeBallParticleEffect: {fileID: 8685162138139692958, guid: 4bd478362f68efb408a451724241045e, type: 3}
   beatBallParticleEffect: {fileID: 7634420434017284396, guid: b9ed127bfed05be4db493ca51e744a76, type: 3}
