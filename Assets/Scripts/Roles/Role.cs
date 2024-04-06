@@ -60,7 +60,7 @@ public class Role : MonoBehaviour
         isCached = false;
         if(cachedQuaffle != null)
         {
-            cachedQuaffle.GetComponent<Quaffle>().ReleaseByBludger();
+            cachedQuaffle.GetComponent<Quaffle>().StopStatus();
             cachedQuaffle = null;
             GetComponent<AnimationController>().NormalState();
         }

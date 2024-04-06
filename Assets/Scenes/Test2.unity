@@ -329,6 +329,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Quaffle
       objectReference: {fileID: 0}
+    - target: {fileID: 6975003194434966615, guid: 313b5ad355550b342985f689a9ad6248, type: 3}
+      propertyPath: velocity
+      value: 60
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 313b5ad355550b342985f689a9ad6248, type: 3}
 --- !u!1 &307971479
@@ -361,7 +365,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &307971481
 MonoBehaviour:
@@ -458,7 +462,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &532986212 stripped
 GameObject:
@@ -746,7 +750,7 @@ Transform:
   m_Children:
   - {fileID: 2090593135}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
@@ -997,7 +1001,7 @@ Transform:
   - {fileID: 1027271185}
   - {fileID: 1380005235}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1346145513
 GameObject:
@@ -6379,7 +6383,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 332040434474182403, guid: 485e261ff21372d42bcf305547702917, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 332040434474182403, guid: 485e261ff21372d42bcf305547702917, type: 3}
       propertyPath: m_AnchorMax.x

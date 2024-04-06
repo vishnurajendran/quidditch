@@ -686,7 +686,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778b718a81cd8414db5d18e78da5256a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  throwRadius: 30
+  throwRadius: 80
   attackCircleRadius: 15
   guardeCircleRadius: 25
   escapeBuldgerRadius: 35
@@ -705,7 +705,7 @@ MonoBehaviour:
   validRadius: 100
   rotateRadius: 40
   passDistance: 60
-  perceptionRadius: 200
+  perceptionRadius: 400
   focusChaser: {fileID: 0}
   dizzyParticleEffect: {fileID: 7042460136962542568}
   takeBallParticleEffect: {fileID: 8685162138139692958, guid: 4bd478362f68efb408a451724241045e, type: 3}

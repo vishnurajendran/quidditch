@@ -25,7 +25,9 @@ public class GoalDetector : MonoBehaviour
             && (other.gameObject.GetComponent<Quaffle>().takenChaser == null ||
             other.gameObject.GetComponent<Quaffle>().takenChaser.GetComponent<TeamEntity>().MyTeam != _team))
         {
+            
             GameManager.Instance.QuaffleScored(_otherTeam);
+            other.gameObject.GetComponent<Quaffle>().ResetStatus();
             GameObject tmp = GameObject.Instantiate(beatParticleEffect, this.transform.position, this.transform.rotation);
             GameObject.Destroy(tmp, 2.0f);
         }

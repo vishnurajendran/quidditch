@@ -24,8 +24,6 @@ public class Quaffle : MonoBehaviour
 
     private Vector3 originPos = GameManager.Instance.GetQuaffleResetPosition();
 
-
-
     private void Start()
     {
         originPos = GameManager.Instance.GetQuaffleResetPosition();
@@ -42,11 +40,13 @@ public class Quaffle : MonoBehaviour
         lastThrowingNPC = null;
     }
 
-    public void ReleaseByBludger()
+    public void StopStatus()
     {
+        isToTarget = false;
         pathPoints.Clear();
-        pathIndex = 0;
         originPos = transform.position;
+        pathIndex = 0;
+        lastThrowingNPC = null;
         isCached = false;
         takenChaser = null;
     }
@@ -102,7 +102,7 @@ public class Quaffle : MonoBehaviour
                     Debug.DrawLine(pathPoints[i-1], pathPoints[i], Color.red);
                 }
                 if (pathIndex >= pathPoints.Count) {
-                    ResetStatus();
+                    StopStatus();
                     return;
                 }
 
