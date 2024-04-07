@@ -101,7 +101,6 @@ namespace Teams
         
         public void SetTeam(Team team)
         {
-            TeamManager.RegisterToTeam(_team, transform);
             _team = team;
             TeamManager.RegisterToTeam(_team, transform);
         }

@@ -15,7 +15,7 @@ namespace AgentControllers
 
         private void OnEnable()
         {
-            GetComponent<TeamEntity>().BTUpdate();
+            GetComponent<TeamEntity>()?.BTUpdate();
         }
 
         private float CalculateHorizontal()
@@ -108,7 +108,6 @@ namespace AgentControllers
             if(CheckIsHitByBludger())
             {
                 curDirection = new Vector3(0.0f, -1.0f, 0.0f);
-                Debug.Log("current direction:" + curDirection);
             }
             else
             {

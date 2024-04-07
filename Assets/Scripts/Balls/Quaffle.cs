@@ -4,11 +4,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Reflection;
 using Teams;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.Progress;
+using Vector3 = UnityEngine.Vector3;
 
 public class Quaffle : MonoBehaviour
 {
@@ -22,7 +24,7 @@ public class Quaffle : MonoBehaviour
     public List<Vector3> pathPoints = new List<Vector3>();
     private int pathIndex = 0;
 
-    private Vector3 originPos = GameManager.Instance.GetQuaffleResetPosition();
+    private Vector3 originPos = Vector3.zero;
 
     private void Start()
     {

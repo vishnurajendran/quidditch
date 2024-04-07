@@ -57,13 +57,18 @@ public class GameManager : SingletonBehaviour<GameManager>
     public Action<Team> OnGoldenSnitchScored;
     public Action<Team> OnQuaffleScored;
     public Action<TimeSpan> OnTimerUpdate;
+    public Action OnTeamsAssigned;
     
     // Indicates if Game Started;
     public bool GameStarted { get; private set; }
 
+    public Team PlayerTeam => _playerTeam;
 
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        
         Time.timeScale = _gameTimeScale;
         StartGame();
 
@@ -119,8 +124,10 @@ public class GameManager : SingletonBehaviour<GameManager>
         {
             SidesManager.Instance.AssignTeams(side1team, side1team == _playerTeam,
                     side2team, side2team == _playerTeam, _playerStartType);
+            
+            OnTeamsAssigned?.Invoke();
         }
-
+        
         StartCoroutine(StartGameBeginCountdown());
         StartCoroutine(GameTimer());
     }
@@ -212,6 +219,17 @@ public class GameManager : SingletonBehaviour<GameManager>
         OnQuaffleScored?.Invoke(team);
         ResetQuafflePosition();
         audienceManager.Celerbrate();
+        GameUI.Instance.TeamScored(team);
+    }
+
+    public void GiveQuaffleToChaser(Team team)
+    {
+        Debug.Log($"GM:: Giving Quaffle to {team}");
+        var chasers = TeamManager.GetChasersOfTeam(team);
+        var randChaser = chasers[Random.Range(0, chasers.Count)];
+        randChaser.GetComponent<Role>().cachedQuaffle = quaffle;
+        randChaser.GetComponent<Role>().TakeQuaffle();
+        Debug.Log($"GM:: Quaffle given to {randChaser.name}");
     }
 
     public void GoldenSnitchScored(Team team)

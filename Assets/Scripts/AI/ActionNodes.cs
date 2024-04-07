@@ -395,13 +395,16 @@ namespace BT
         public override NodeState Process()
         {
             List<Transform> targetTransforms = actor.GetComponent<CharacterSwitcher>().GetOtherTeamTargets();
-            //Debug.Log("current team actor:" + actor.GetComponent<TeamEntity>().MyTeam +  " The target transformation:" + targetTransforms[0].gameObject.tag);
+            
             float throwRange = actor.GetComponent<Role>().throwRadius;
             float distance = Vector3.Distance(targetTransforms[0].position, actor.transform.position);
             if (distance > throwRange)
                 return NodeState.FAILURE;
-            else 
+            else
+            {
+                Debug.Log("current team actor:" + actor.GetComponent<TeamEntity>().MyTeam +  " The target transformation:" + targetTransforms[0].gameObject.tag);
                 return NodeState.SUCCESS;
+            }
         }
     }
 

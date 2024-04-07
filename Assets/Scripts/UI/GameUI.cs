@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Teams;
 using TMPro;
@@ -20,13 +21,25 @@ namespace UI
         [FormerlySerializedAs("_countdownText")] [SerializeField] private TMP_Text _zoomMsgText;
         [FormerlySerializedAs("cntMinScale")] [SerializeField] private float zoomMsgMinScale = 0.25f;
         [FormerlySerializedAs("cntMaxScale")] [SerializeField] private float zoomMsgMaxScale = 3f;
+        [SerializeField] private TMPro.TMP_Text teamTextMessage;
+        [SerializeField] private GameObject teamScoreObj;
         
         private Transform _followTarget;
 
         private Camera _camera;
 
-        private static GameUI _instance;
+        private Coroutine scoreRoutine;
         
+        private static GameUI _instance;
+
+        private void Awake()
+        {
+            GameManager.Instance.OnTeamsAssigned += () =>
+            {
+                teamTextMessage.text = $"You are Team {(GameManager.Instance.PlayerTeam == Team.Team_1 ? 1:2)}";
+            };
+        }
+
         private void Start()
         {
             _camera = Camera.main;
@@ -104,6 +117,41 @@ namespace UI
             {
                 timeStep += (Time.deltaTime / dur);
                 _zoomMsgText.transform.localScale = Vector3.one * Mathf.Lerp(startSize, endSize, timeStep);
+                yield return new WaitForEndOfFrame();
+            }
+        }
+
+        public void TeamScored(Team team)
+        {
+            if(scoreRoutine != null)
+                StopCoroutine(scoreRoutine);
+            var tmpText = teamScoreObj.GetComponentInChildren<TMP_Text>();
+            tmpText.text = $"TEAM {(team == Team.Team_1 ? 1 : 2)} SCORED!!";
+            scoreRoutine = StartCoroutine(TeamScoredRoutine());
+        }
+
+        IEnumerator TeamScoredRoutine()
+        {
+            var cg = teamScoreObj.GetComponent<CanvasGroup>();
+            cg.alpha = 0;
+            teamScoreObj.transform.localScale = Vector3.one * 0.15f;
+            Vector3 smallScale = Vector3.one * 0.15f;
+            Vector3 maxScale = Vector3.one * 1.15f;
+            float timeStep = 0;
+            while (timeStep <= 1)
+            {
+                timeStep += Time.deltaTime / 0.25f;
+                teamScoreObj.transform.localScale = Vector3.Lerp(smallScale, maxScale, timeStep);
+                cg.alpha = Mathf.Lerp(0, 1, timeStep);
+                yield return new WaitForEndOfFrame();
+            }
+            yield return new WaitForSeconds(1);
+            timeStep = 0;
+            while (timeStep <= 1)
+            {
+                timeStep += Time.deltaTime / 0.25f;
+                teamScoreObj.transform.localScale = Vector3.Lerp(maxScale, smallScale, timeStep);
+                cg.alpha = Mathf.Lerp(1, 0, timeStep);
                 yield return new WaitForEndOfFrame();
             }
         }

@@ -36,7 +36,7 @@ namespace AgentControllers
 
         public List<Transform> GetTeamTargets()
         {
-            return TeamManager.GetTargetsOfTeam(GetComponent<TeamEntity>().MyTeam);
+            return TeamManager.GetTargetsOfTeam(GetComponent<TeamEntity>().GetEnemyTeam());
         }
 
         public List<Transform> GetOtherTeamTargets()
@@ -44,8 +44,7 @@ namespace AgentControllers
             Team actorTeamType = GetComponent<TeamEntity>().MyTeam;
             if(actorTeamType == Team.Team_1)
                 return TeamManager.GetTargetsOfTeam(Team.Team_2);
-            else
-                return TeamManager.GetTargetsOfTeam(Team.Team_1);
+            return TeamManager.GetTargetsOfTeam(Team.Team_1);
         }
 
         private void FixedUpdate()

@@ -1,11 +1,9 @@
 using AgentControllers;
 using Gameplay;
-using JetBrains.Annotations;
-using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using Teams;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Role : MonoBehaviour
 {
@@ -38,6 +36,9 @@ public class Role : MonoBehaviour
     [SerializeField] public float perceptionRadius = 200.0f;
     [SerializeField] public Transform focusChaser = null;
 
+    [SerializeField] private Transform targetGUI;
+    [SerializeField] private Transform[] bludgerTargetIdcGUI;
+    
     //particle effect
     public GameObject dizzyParticleEffect;
     public GameObject takeBallParticleEffect;
@@ -252,7 +253,7 @@ public class Role : MonoBehaviour
         cachedQuaffle.GetComponent<Quaffle>().Cache(gameObject);
         GetComponent<AnimationController>().CatchTheBall();
         GameObject tmpObj = GameObject.Instantiate(takeBallParticleEffect, cachedQuaffle.transform.position, new Quaternion());
-        GameObject.Destroy(tmpObj, 2.0f);
+        Destroy(tmpObj, 2.0f);
     }
 
     //get the golden snitch
@@ -262,10 +263,24 @@ public class Role : MonoBehaviour
         isCachedGoldenSnich = true;
         cachedGoldenSnitch.GetComponent<GoldenSnich>().Catch(gameObject);
         GetComponent<AnimationController>().CatchTheBall();
-        GameObject tmpObj = GameObject.Instantiate(takeBallParticleEffect, cachedQuaffle.transform.position, new Quaternion());
-        GameObject.Destroy(tmpObj, 2.0f);
+        GameObject tmpObj = Instantiate(takeBallParticleEffect, cachedGoldenSnitch.transform.position, new Quaternion());
+        Destroy(tmpObj, 2.0f);
     }
 
+    private void ToggleQuaffleTarget()
+    {
+        var go = GameManager.Instance.quaffle;
+        var cgt = FindObjectOfType<CinemachineTargetGroup>();
+        if (cgt.m_Targets[1].target == null)
+        {
+            cgt.m_Targets[1].target = go.transform;
+        }
+        else
+        {
+            cgt.m_Targets[1].target = null;
+        }
+    }
+    
     // Update is called once per frame
     void Update()
     {
@@ -285,10 +300,13 @@ public class Role : MonoBehaviour
 
         if (!IsPlayer()) return;
 
+        UpdateTargetGUI();
+        
+        
         //the player logic
         if (playerType == PlayerType.Chaser)
         {
-            if (Input.GetKeyUp(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 //Debug.Log("Check F Up:");
                 if (!isCached && cachedQuaffle != null)
@@ -299,6 +317,11 @@ public class Role : MonoBehaviour
                 {
                     PassQuaffleByAnimation();
                 }
+            }
+
+            if (Input.GetKeyDown(KeyCode.CapsLock))
+            {
+                ToggleQuaffleTarget();
             }
         }
 
@@ -320,7 +343,7 @@ public class Role : MonoBehaviour
 
         if(playerType == PlayerType.Seeker)
         {
-            if (Input.GetKeyUp(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 if (!isCachedGoldenSnich && cachedGoldenSnitch != null)
                 {
@@ -329,5 +352,30 @@ public class Role : MonoBehaviour
             }
         }
 
+    }
+
+    private void UpdateTargetGUI()
+    {
+        Transform target=null;
+        if (playerType == PlayerType.Seeker)
+        {
+            target = GameManager.Instance.goldenSnitch.transform;
+        }
+        else if (playerType == PlayerType.Chaser || playerType == PlayerType.Keeper)
+        {
+            target = GameManager.Instance.quaffle.transform;
+        }
+
+        if (target != null)
+        {
+            var forward = target.position - transform.position;
+            targetGUI.forward = forward.normalized;
+        }
+
+        foreach (GameObject bludger in GameManager.Instance.Bludges)
+        {
+            var bForward = bludger.transform.position - transform.position;
+            bludgerTargetIdcGUI[GameManager.Instance.Bludges.IndexOf(bludger)].forward = bForward.normalized;
+        }
     }
 }

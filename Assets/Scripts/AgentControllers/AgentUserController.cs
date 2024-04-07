@@ -10,15 +10,23 @@ namespace AgentControllers
     {
         private Camera _camera;
         [SerializeField] private Transform camTarget;
-
+        [SerializeField] private GameObject helpGUI;
         private void OnEnable()
         {
-            GameObject.FindObjectOfType<CinemachineFreeLook>().LookAt = camTarget;
-            GameObject.FindObjectOfType<CinemachineFreeLook>().Follow = camTarget;
+            helpGUI.SetActive(true);
+            
+            FindObjectOfType<CinemachineFreeLook>().Follow = camTarget;
+            FindObjectOfType<CinemachineTargetGroup>().m_Targets[0].target = camTarget;
+            
             GetComponent<BTBeater>().enabled = false;
             GetComponent<BTChaser>().enabled = false;
             GetComponent<BTSeeker>().enabled = false;
             GetComponent<BTKeeper>().enabled = false;
+        }
+
+        private void OnDisable()
+        {
+            helpGUI.SetActive(false);   
         }
 
         protected override void Start()

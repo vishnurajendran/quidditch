@@ -16,7 +16,7 @@ namespace Gameplay
         [SerializeField] private Transform _seekerPosition;
         [SerializeField] private Image _symbol;
         [SerializeField] private GameObject _playerPrefab;
-        
+        [SerializeField] private TMPro.TMP_Text _tmpText;
         private List<Transform> _players;
         private bool _hasHumanPlayer=false;
         private PlayerType _humanPlayerType;
@@ -32,6 +32,8 @@ namespace Gameplay
             {
                 goal.SetTeam(_team);
             }
+
+            _tmpText.text = $"TEAM {(_team == Team.Team_1 ? 1:2)}";
         }
         
         public void SpawnPlayers()
