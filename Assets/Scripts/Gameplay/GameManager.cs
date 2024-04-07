@@ -31,8 +31,9 @@ public class GameManager : SingletonBehaviour<GameManager>
     private Vector3 maxSpacePoint = new Vector3(100, 300, 100);
     [SerializeField]
     private float forceDistance = 20.0f;
+    [SerializeField]
+    public AudienceManager audienceManager;
 
-   
 
 
     [Header("Testing only"),SerializeField]
@@ -202,5 +203,6 @@ public class GameManager : SingletonBehaviour<GameManager>
     {
         OnQuaffleScored?.Invoke(team);
         ResetQuafflePosition();
+        audienceManager.Celerbrate();
     }
 }
