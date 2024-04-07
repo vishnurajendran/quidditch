@@ -11,6 +11,7 @@ namespace UI
         [SerializeField] private TMPro.TMP_Text _team2ScoreText;
         [SerializeField] private TMPro.TMP_Text _timerText;
         [SerializeField] private int _quaffleScoreIncrement = 10;
+        [SerializeField] private int _goldenSnitchScoreIncrement = 150;
         
         private int _team1Score=0;
         private int _team2Score=0;
@@ -20,8 +21,19 @@ namespace UI
             UpdateScores(Team.Team_1);
             UpdateScores(Team.Team_2);
 
+            GameManager.Instance.OnGoldenSnitchScored += OnGoldenSnitchCatched;
             GameManager.Instance.OnQuaffleScored += OnQuaffleScored;
             GameManager.Instance.OnTimerUpdate += OnTimerUpdated;
+        }
+
+        public void OnGoldenSnitchCatched(Team team)
+        {
+            if (team == Team.Team_1)
+                _team1Score += _goldenSnitchScoreIncrement;
+            else if (team == Team.Team_2)
+                _team2Score += _goldenSnitchScoreIncrement;
+
+            UpdateScores(team);
         }
 
         private void OnQuaffleScored(Team team)

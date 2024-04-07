@@ -10,8 +10,10 @@ namespace UI
     public class GameUI : SingletonBehaviour<GameUI>
     {
         [SerializeField] private GameObject _selector;
+        [SerializeField] private GameObject _quaffle;
         [SerializeField] private Vector3 _followOffset = new Vector3(0,2,0);
-        
+        [SerializeField] private Transform _quaffleTarget;
+
         [FormerlySerializedAs("_coutdownBG")]
         [Header("Countdown")]
         [SerializeField] private GameObject _zoomMsgBG;
@@ -20,6 +22,7 @@ namespace UI
         [FormerlySerializedAs("cntMaxScale")] [SerializeField] private float zoomMsgMaxScale = 3f;
         
         private Transform _followTarget;
+
         private Camera _camera;
 
         private static GameUI _instance;
@@ -27,7 +30,22 @@ namespace UI
         private void Start()
         {
             _camera = Camera.main;
+            
         }
+
+        /*
+        private bool VisibleToCamera(Transform player)
+        {
+            var angle = GetAngleFromCameraTo(player);
+            return angle <= 60;
+        }
+
+        private float GetAngleFromCameraTo(Transform target)
+        {
+            var pos = target.position;
+            return Vector3.Angle(Camera.main.transform.forward, pos - transform.position);
+        }
+        */
 
         public void SetFollowTarget(Transform target)
         {
@@ -49,6 +67,20 @@ namespace UI
         
         private void Update()
         {
+            /*
+            if (VisibleToCamera(_quaffleTarget))
+            {
+                _quaffle.SetActive(true);
+                var quafflePos = _camera.WorldToScreenPoint(_quaffleTarget.position + _followOffset);
+                _quaffle.transform.position = quafflePos;
+                Debug.Log("UI indicator: " + quafflePos);
+            }
+            else
+            {
+                _quaffle.SetActive(false);
+            }
+            */
+
             if (!_followTarget)
                 return;
 

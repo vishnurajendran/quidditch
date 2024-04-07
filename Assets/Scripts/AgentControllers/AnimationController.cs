@@ -21,7 +21,7 @@ public class AnimationController : MonoBehaviour
 
     public void HitBallAnimation()
     {
-        Debug.Log("Call Hit Ball");
+        //Debug.Log("Call Hit Ball");
         animator.SetBool("Hit", true);
         ikController.SetLeftHandIKWeight(0.0f);
     }

@@ -11,6 +11,7 @@ namespace Teams
         private static Dictionary<Team, List<Transform>> _chasersByTeam;
         private static Dictionary<Team, List<Transform>> _beatersByTeam;
         private static Dictionary<Team, List<Transform>> _seekerByTeam;
+        private static Dictionary<Team, List<Transform>> _keeperByTeam;
         private static Dictionary<Team, List<Transform>> _targetsByTeam;
 
         private static void TryInitPlayersDict()
@@ -44,7 +45,7 @@ namespace Teams
 
             GameObject[] team1targets = GameObject.FindGameObjectsWithTag("Team1Target");
             GameObject[] team2targets = GameObject.FindGameObjectsWithTag("Team2Target");
-            Debug.Log("TryInitTargetsDict team1 targets:" + team1targets.Length + "  team2 targets:" + team2targets.Length);
+            //Debug.Log("TryInitTargetsDict team1 targets:" + team1targets.Length + "  team2 targets:" + team2targets.Length);
             for (int i = 0; i < team1targets.Length; i++)
                 _targetsByTeam[Team.Team_1].Add(team1targets[i].transform);
             for(int i = 0;i < team2targets.Length; i++)
@@ -79,6 +80,13 @@ namespace Teams
                     _seekerByTeam[team].Add(transform);
                 }
             }
+            else if (transform.GetComponent<TeamEntity>().MyPlayerType == Gameplay.PlayerType.Keeper)
+            {
+                if (!_keeperByTeam[team].Contains(transform))
+                {
+                    _keeperByTeam[team].Add(transform);
+                }
+            }
         }
         
         public static void DeRegisterFromTeam(Team team, Transform transform)
@@ -107,6 +115,13 @@ namespace Teams
                 if (_seekerByTeam[team].Contains(transform))
                 {
                     _seekerByTeam[team].Remove(transform);
+                }
+            }
+            else if (transform.GetComponent<TeamEntity>().MyPlayerType == Gameplay.PlayerType.Keeper)
+            {
+                if (_keeperByTeam[team].Contains(transform))
+                {
+                    _keeperByTeam[team].Remove(transform);
                 }
             }
         }

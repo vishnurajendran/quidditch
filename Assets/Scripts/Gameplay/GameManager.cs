@@ -53,7 +53,8 @@ public class GameManager : SingletonBehaviour<GameManager>
 
     private Team _playerTeam;
     private float timerSeconds;
-    
+
+    public Action<Team> OnGoldenSnitchScored;
     public Action<Team> OnQuaffleScored;
     public Action<TimeSpan> OnTimerUpdate;
     
@@ -73,6 +74,13 @@ public class GameManager : SingletonBehaviour<GameManager>
         {
             Bludges.Add(bludgers[i]);
         }
+
+        OnTimerUpdate += OnTimerUpdated;
+    }
+
+    private void OnTimerUpdated(TimeSpan span)
+    {
+        goldenSnitch.GetComponent<GoldenSnich>().UpdateVelocity(span.Seconds, ((gameTimeMinutes * 60) / 2));
     }
 
     private void Update()
@@ -203,6 +211,13 @@ public class GameManager : SingletonBehaviour<GameManager>
     {
         OnQuaffleScored?.Invoke(team);
         ResetQuafflePosition();
+        audienceManager.Celerbrate();
+    }
+
+    public void GoldenSnitchScored(Team team)
+    {
+        OnGoldenSnitchScored?.Invoke(team);
+        //todo: stop the game
         audienceManager.Celerbrate();
     }
 }
