@@ -139,11 +139,19 @@ public class Role : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameManager.Instance.OnHalfTime += OnGameHalfTime;
         playerType = GetComponent<TeamEntity>().MyPlayerType;
         InitialFriendsInformation();
         GetComponent<AnimationController>().InitRoles(playerType);
     }
 
+    private void OnGameHalfTime()
+    {
+        cachedQuaffle = null;
+        isCached = false;
+        GetComponent<AnimationController>().NormalState();
+    }
+    
     public static Vector3 GetBezierPoint(float t, Vector3 start, Vector3 center, Vector3 end)
     {
         return (1 - t) * (1 - t) * start + 2 * t * (1 - t) * center + t * t * end;
@@ -152,7 +160,7 @@ public class Role : MonoBehaviour
     public Vector3[] GetThrowPath(Vector3 startPoint, Vector3 endPoint, int resolution = 10)
     {
         float distance = (endPoint - startPoint).magnitude;
-        var bezierControlPoint = (startPoint + endPoint) * 0.5f + (Vector3.up * distance * 0.3f);
+        var bezierControlPoint = (startPoint + endPoint) * 0.5f + (Vector3.up * (distance * 0.3f));
 
         Vector3[] path = new Vector3[resolution];
         for (int i = 0; i < resolution; i++)

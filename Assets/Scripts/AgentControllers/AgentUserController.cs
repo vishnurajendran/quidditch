@@ -1,5 +1,7 @@
 using System;
 using Cinemachine;
+using Teams;
+using UI;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,7 +16,7 @@ namespace AgentControllers
         private void OnEnable()
         {
             helpGUI.SetActive(true);
-            
+            GameUI.Instance.SetCurrenType(GetComponent<TeamEntity>().MyPlayerType);
             FindObjectOfType<CinemachineFreeLook>().Follow = camTarget;
             FindObjectOfType<CinemachineTargetGroup>().m_Targets[0].target = camTarget;
             

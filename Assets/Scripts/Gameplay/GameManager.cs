@@ -33,8 +33,7 @@ public class GameManager : SingletonBehaviour<GameManager>
     private float forceDistance = 20.0f;
     [SerializeField]
     public AudienceManager audienceManager;
-
-
+    
 
     [Header("Testing only"),SerializeField]
     private float _gameTimeScale = 2;
@@ -42,15 +41,12 @@ public class GameManager : SingletonBehaviour<GameManager>
 
     [Header("Testing only"), SerializeField]
     private bool _gameEnableSides = true;
-
-
+    
     public QuaffleState g_quaffleState = QuaffleState.Space;
     public GameObject quaffle = null;
     public List<GameObject> Bludges = new List<GameObject>();
     public GameObject goldenSnitch = null;
-
-
-
+    
     private Team _playerTeam;
     private float timerSeconds;
 
@@ -58,18 +54,23 @@ public class GameManager : SingletonBehaviour<GameManager>
     public Action<Team> OnQuaffleScored;
     public Action<TimeSpan> OnTimerUpdate;
     public Action OnTeamsAssigned;
+    public Action OnHalfTime;
+    public Action OnGameOver;
+
+    private bool _halftimeDone = false;
     
     // Indicates if Game Started;
     public bool GameStarted { get; private set; }
 
     public Team PlayerTeam => _playerTeam;
-
+    
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         
         Time.timeScale = _gameTimeScale;
+        _halftimeDone = false;
         StartGame();
 
         quaffle = GameObject.FindGameObjectWithTag("Quaffle");
@@ -123,7 +124,7 @@ public class GameManager : SingletonBehaviour<GameManager>
         
         if(_gameEnableSides)
         {
-            SidesManager.Instance.AssignTeams(side1team, side1team == _playerTeam,
+            SidesManager.Instance?.AssignTeams(side1team, side1team == _playerTeam,
                     side2team, side2team == _playerTeam, _playerStartType);
             
             OnTeamsAssigned?.Invoke();
@@ -194,14 +195,16 @@ public class GameManager : SingletonBehaviour<GameManager>
                     GameStarted = false;
                     AudioManager.Instance.PlayWhistle();
                     Debug.Log("Game Over");
+                    GameOver();
+                    yield break;
                 }
-                
-                if(timerSeconds == ((gameTimeMinutes*60)/2))
+                if(timerSeconds == ((gameTimeMinutes*60)/2) && !_halftimeDone)
                 {
+                    _halftimeDone = true;
                     AudioManager.Instance.PlayWhistle();
                     yield return StartCoroutine(HalfTime());
+                    continue;
                 }
-                
                 timerSeconds -= 1;
                 OnTimerUpdate?.Invoke(TimeSpan.FromSeconds(timerSeconds));
                 yield return new WaitForSeconds(1/Time.timeScale);
@@ -215,10 +218,12 @@ public class GameManager : SingletonBehaviour<GameManager>
     {
         GameStarted = false;
         yield return new WaitForSeconds(1/Time.timeScale);
+        ResetQuafflePosition();
         GameUI.Instance.ShowZoomingMessage(true, "HALF TIME", 0.75f/Time.timeScale);
         yield return new WaitForSeconds(1.5f/Time.timeScale);
         GameUI.Instance.ShowZoomingMessage(true, "SIDE CHANGE", 0.75f/Time.timeScale);
         yield return new WaitForSeconds(1);
+        TeamManager.SwapTargets();
         SidesManager.Instance.SwapSides();
         SidesManager.Instance.ResetPositions();
         yield return StartCoroutine(StartGameBeginCountdown());
@@ -231,8 +236,11 @@ public class GameManager : SingletonBehaviour<GameManager>
         audienceManager.Celerbrate();
         GameUI.Instance.TeamScored(team);
         AudioManager.Instance.PlayCheerOnGoal();
-        
         AudioManager.Instance.PlayGoalSFX();
+
+        var rand = Random.Range(0, 100);
+        if(rand%2 == 0)
+            return;
         if(team == PlayerTeam)
             AudioManager.Instance.PlayMyGoalVO();
         else
@@ -245,7 +253,19 @@ public class GameManager : SingletonBehaviour<GameManager>
     {
         Debug.Log($"GM:: Giving Quaffle to {team}");
         var chasers = TeamManager.GetChasersOfTeam(team);
-        var randChaser = chasers[Random.Range(0, chasers.Count)];
+        var targets = TeamManager.GetTargetsOfTeam(team);
+        var minDist = Mathf.Infinity;
+        var closestChaser = chasers[0];
+        foreach (var chaser in chasers)
+        {
+            var dist = Vector3.Distance(targets[0].position, chaser.position);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                closestChaser = chaser;
+            }
+        }
+        var randChaser = closestChaser;
         randChaser.GetComponent<Role>().cachedQuaffle = quaffle;
         randChaser.GetComponent<Role>().TakeQuaffle();
         Debug.Log($"GM:: Quaffle given to {randChaser.name}");
@@ -254,7 +274,20 @@ public class GameManager : SingletonBehaviour<GameManager>
     public void GoldenSnitchScored(Team team)
     {
         OnGoldenSnitchScored?.Invoke(team);
-        //todo: stop the game
         audienceManager.Celerbrate();
+        GameOver();
+    }
+
+    private void GameOver()
+    {
+        GameStarted = false;
+        AudioManager.Instance.PlayWhistle();
+        StartCoroutine(DelayedGameOver());
+    }
+
+    IEnumerator DelayedGameOver()
+    {
+        yield return new WaitForSeconds(1);
+        OnGameOver?.Invoke();
     }
 }

@@ -16,6 +16,9 @@ namespace UI
         private int _team1Score=0;
         private int _team2Score=0;
 
+        public int Team1Score => _team1Score;
+        public int Team2Score => _team2Score;
+        
         private void Awake()
         {
             UpdateScores(Team.Team_1);

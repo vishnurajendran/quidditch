@@ -53,6 +53,16 @@ namespace Teams
             for(int i = 0;i < team2targets.Length; i++)
                 _targetsByTeam[Team.Team_2].Add(team2targets[i].transform);
         }
+
+        public static void SwapTargets()
+        {
+            var team1targets = _targetsByTeam[Team.Team_1];
+            var team2targets = _targetsByTeam[Team.Team_2];
+            
+            _targetsByTeam[Team.Team_2] = team1targets;
+            _targetsByTeam[Team.Team_1] = team2targets;
+
+        }
         
         public static void RegisterToTeam(Team team, Transform transform)
         {

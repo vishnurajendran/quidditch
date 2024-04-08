@@ -20,9 +20,9 @@ namespace Gameplay
         [SerializeField]
         private AudioClip[] theirGoalVo;
         [SerializeField]
-        private AudioClip winVo;
+        private AudioClip[] winVo;
         [SerializeField]
-        private AudioClip loseVo;
+        private AudioClip[] loseVo;
         [SerializeField]
         private AudioClip whistle;
 
@@ -32,6 +32,12 @@ namespace Gameplay
         [SerializeField] private AudioSource _bgSource;
         [SerializeField] private AudioSource _ambianceSource;
         [SerializeField] private AudioMixer _mixer;
+
+        [RuntimeInitializeOnLoadMethod]
+        private static void LoadAudioManager()
+        {
+            Instantiate(Resources.Load("AudioManager"));
+        }
         
         public void SetupMatchAudio()
         {
@@ -79,12 +85,12 @@ namespace Gameplay
         
         public void PlayWinVO()
         {
-           PlayVOClip(winVo);
+           PlayVOClip(winVo[Random.Range(0, winVo.Length)]);
         }
         
         public void PlayLoseVO()
         {
-            PlayVOClip(loseVo);
+            PlayVOClip(loseVo[Random.Range(0, loseVo.Length)]);
         }
 
         public void HitByBludger()

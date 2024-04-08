@@ -32,6 +32,12 @@ namespace Agents
 
         private void FixedUpdate()
         {
+            if (!GameManager.Instance.GameStarted)
+            {
+                _rb.velocity = Vector3.zero;
+                _inputVec = Vector3.zero;
+            }
+            
             var maxSpeed = _moveSpeed * (_boosting ? _boostMultiplier : 1);
             maxSpeed = maxSpeed * (_slowing ? _slowMultiplier : 1);
             _rb.velocity += _inputVec * (maxSpeed * Time.fixedDeltaTime);
@@ -49,6 +55,12 @@ namespace Agents
 
         private void Update()
         {
+            if (!GameManager.Instance.GameStarted)
+            {
+                _rb.velocity = Vector3.zero;
+                _inputVec = Vector3.zero;
+            }
+            
             if (_inputVec != Vector3.zero)
             {
                 Quaternion lookRotation = Quaternion.LookRotation(_rb.velocity.normalized, Vector3.up);
