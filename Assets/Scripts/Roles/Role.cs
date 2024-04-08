@@ -147,9 +147,13 @@ public class Role : MonoBehaviour
 
     private void OnGameHalfTime()
     {
-        cachedQuaffle = null;
-        isCached = false;
-        GetComponent<AnimationController>().NormalState();
+        if (isCached)
+        {
+            cachedQuaffle = null;
+            isCached = false;
+            GetComponent<AnimationController>().NormalState();
+            GameManager.Instance.ResetQuafflePosition();
+        }
     }
     
     public static Vector3 GetBezierPoint(float t, Vector3 start, Vector3 center, Vector3 end)

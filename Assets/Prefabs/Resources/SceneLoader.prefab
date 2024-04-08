@@ -171,7 +171,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 50, y: -129.3}
-  m_SizeDelta: {x: 1594.7366, y: 295.1119}
+  m_SizeDelta: {x: 596.2629, y: 331.0282}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1101094808844432584
 CanvasRenderer:
@@ -204,6 +204,11 @@ MonoBehaviour:
   m_text: 'movement - <color=yellow>WASD</color>
 
     look - <color=yellow>Mouse</color>
+
+    Climb/Descend
+    - <color=yellow>LShift/LCtrl</color>
+
+    Boost - <color=yellow>Space</color>
 
 
     select
@@ -243,8 +248,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 43.7
-  m_fontSizeBase: 43.7
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

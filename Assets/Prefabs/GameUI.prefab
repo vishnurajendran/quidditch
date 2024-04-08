@@ -5056,7 +5056,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 50, y: 50}
-  m_SizeDelta: {x: 758.2996, y: 251.7732}
+  m_SizeDelta: {x: 758.3, y: 251.7732}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &1810025103
 CanvasRenderer:
@@ -5090,9 +5090,14 @@ MonoBehaviour:
 
     look - <color=yellow>Mouse</color>
 
+    Climb/Descend
+    - <color=yellow>LShift/LCtrl</color>
+
+    Boost - <color=yellow>Space</color>
+
 
     select
-    target - <color=yellow>Scroll Wheel / Right Mouse Button</color>
+    target - <color=yellow>Scroll Wheel or Right Mouse Button</color>
 
     switch
     characters - <color=yellow>Q</color>
@@ -5100,6 +5105,7 @@ MonoBehaviour:
 
     pass/score/hit bludger/catch snitch
     -<color=yellow> F</color>
+
 
 '
   m_isRightToLeft: 0
@@ -5128,8 +5134,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 27.81
+  m_fontSizeBase: 27.81
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
