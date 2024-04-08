@@ -25,7 +25,6 @@ public class UIWiggle : MonoBehaviour
                 transform.localPosition = Vector3.Lerp(current, next, timeStep);
                 yield return new WaitForEndOfFrame();
             }
-
             yield return new WaitForEndOfFrame();
         }
     }

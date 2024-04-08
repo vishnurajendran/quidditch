@@ -1,4 +1,5 @@
 using System;
+using Gameplay;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -24,6 +25,7 @@ namespace Utils
         
         private void Start()
         {
+            _src.volume = AudioManager.Instance.SFXAudioLevel;
             _rb = GetComponentInParent<Rigidbody>();
             _particleSystem = Camera.main.GetComponentInChildren<ParticleSystem>();
         }

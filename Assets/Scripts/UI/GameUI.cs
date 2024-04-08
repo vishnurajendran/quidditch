@@ -5,6 +5,7 @@ using Teams;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Utils;
 
 namespace UI
@@ -34,6 +35,9 @@ namespace UI
         [SerializeField] private Transform scoreParent;
         [SerializeField] private GameObject winScoreText;
         [SerializeField] private GameObject loseScoreText;
+        [SerializeField] private Button skipBttn;
+
+        [SerializeField] private GameObject pauseMenu;
         
         private Transform _followTarget;
         private Camera _camera;
@@ -41,6 +45,8 @@ namespace UI
 
         private static GameUI _instance;
 
+        public bool IsPaused => pauseMenu.activeSelf;
+        
         private void Awake()
         {
             GameManager.Instance.OnTeamsAssigned += () =>
@@ -52,6 +58,10 @@ namespace UI
         private void Start()
         {
             _camera = Camera.main;
+            skipBttn.onClick.AddListener(() =>
+            {
+                SceneLoader.Instance.LoadMainMenu();
+            });
             GameManager.Instance.OnGameOver += OnGameOver;
         }
 
@@ -209,6 +219,24 @@ namespace UI
         public void SetCurrenType(PlayerType type)
         {
             currentPlayerTypeUI.text = type.ToString();
+        }
+
+        public void OnPause(Action onContinue)
+        {
+            pauseMenu.SetActive(true);
+            var bttns = pauseMenu.GetComponentsInChildren<Button>();
+            bttns[0].onClick.RemoveAllListeners();
+            bttns[0].onClick.AddListener(()=>
+            {
+                pauseMenu.SetActive(false);
+                onContinue?.Invoke();
+            });
+
+            bttns[1].onClick.RemoveAllListeners();
+            bttns[1].onClick.AddListener(() =>
+            {
+                SceneLoader.Instance.LoadMainMenu();
+            });
         }
     }
 }

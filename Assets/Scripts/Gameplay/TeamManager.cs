@@ -14,6 +14,17 @@ namespace Teams
         private static Dictionary<Team, List<Transform>> _keeperByTeam;
         private static Dictionary<Team, List<Transform>> _targetsByTeam;
 
+
+        public static void ResetManager()
+        {
+            _playersByTeam = null;
+            _chasersByTeam = null;
+            _beatersByTeam = null;
+            _seekerByTeam = null;
+            _keeperByTeam = null;
+            _targetsByTeam = null;
+        }
+        
         private static void TryInitPlayersDict()
         {
             if(_playersByTeam != null)

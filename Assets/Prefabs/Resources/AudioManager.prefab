@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6917355624901439070}
   - component: {fileID: 6917355624901439065}
+  - component: {fileID: 8898262980556838337}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -46,8 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a237f65b3914bee9a41090eb0421068, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  menuMusic: {fileID: 8300000, guid: d2edb8893a735184e93e5bad54f3a5d6, type: 3}
+  menuAmbience: {fileID: 8300000, guid: beb4d47ba62a6174694e00fb1a5f9978, type: 3}
   matchMusic: {fileID: 8300000, guid: a77a15c900567ab43be548037b3be89d, type: 3}
-  ambience: {fileID: 8300000, guid: 1cd5790fd8127e14caf1967cf73fa9c3, type: 3}
+  matchAmbience: {fileID: 8300000, guid: 1cd5790fd8127e14caf1967cf73fa9c3, type: 3}
   cheerOnGoal: {fileID: 8300000, guid: fec6141628fef6e4783e7849826ff4fc, type: 3}
   hitSfx: {fileID: 8300000, guid: bd943f60f4dfa94438aa784cd4dfe85e, type: 3}
   myGoalVo:
@@ -76,6 +79,18 @@ MonoBehaviour:
   _bgSource: {fileID: 6917355626636249578}
   _ambianceSource: {fileID: 6917355625829642483}
   _mixer: {fileID: 24100000, guid: cb12dce9bad0e4e49866849e583f5d51, type: 2}
+--- !u!114 &8898262980556838337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6917355624901439064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3f04d4ac34f7cb4bbfbfd58529d66e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6917355625829642482
 GameObject:
   m_ObjectHideFlags: 0

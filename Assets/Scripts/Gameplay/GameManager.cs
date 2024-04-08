@@ -5,6 +5,7 @@ using Gameplay;
 using Teams;
 using UI;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using Utils;
 using Random = UnityEngine.Random;
 
@@ -58,6 +59,7 @@ public class GameManager : SingletonBehaviour<GameManager>
     public Action OnGameOver;
 
     private bool _halftimeDone = false;
+    private bool _canPause = true;
     
     // Indicates if Game Started;
     public bool GameStarted { get; private set; }
@@ -93,6 +95,24 @@ public class GameManager : SingletonBehaviour<GameManager>
     private void Update()
     {
         CheckQuaffleState();
+        if (Input.GetKeyDown(KeyCode.Escape) && _canPause && GameStarted)
+        {
+            _canPause = false;
+            GameStarted = false;
+            Time.timeScale = 0;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            
+            GameUI.Instance.OnPause(() =>
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                
+                Time.timeScale = 1;
+                _canPause = true;
+                GameStarted = true;
+            });
+        }
     }
 
     public void CheckQuaffleState()
@@ -168,7 +188,8 @@ public class GameManager : SingletonBehaviour<GameManager>
     public Vector3 GetQuaffleResetPosition() { return quaffleResetPosition; }
 
     private IEnumerator StartGameBeginCountdown()
-    { 
+    {
+        _canPause = false;
         int countdown = gameStartCountdown;
         yield return new WaitForSeconds(1/Time.timeScale);
         while (countdown > 0)
@@ -182,6 +203,7 @@ public class GameManager : SingletonBehaviour<GameManager>
         GameUI.Instance.ShowZoomingMessage(false, "", 0);
         AudioManager.Instance.PlayWhistle();
         GameStarted = true;
+        _canPause = true;
     }
     
     private IEnumerator GameTimer()
@@ -190,6 +212,9 @@ public class GameManager : SingletonBehaviour<GameManager>
         {
             while (GameStarted)
             {
+                if(GameUI.Instance.IsPaused)
+                    continue;
+                
                 if (timerSeconds <= 0)
                 {
                     GameStarted = false;
@@ -201,6 +226,7 @@ public class GameManager : SingletonBehaviour<GameManager>
                 if(timerSeconds == ((gameTimeMinutes*60)/2) && !_halftimeDone)
                 {
                     _halftimeDone = true;
+                    _canPause = false;
                     AudioManager.Instance.PlayWhistle();
                     yield return StartCoroutine(HalfTime());
                     continue;
@@ -280,6 +306,9 @@ public class GameManager : SingletonBehaviour<GameManager>
 
     private void GameOver()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        _canPause = false;
         GameStarted = false;
         AudioManager.Instance.PlayWhistle();
         StartCoroutine(DelayedGameOver());
