@@ -755,6 +755,7 @@ MonoBehaviour:
   _boostMultiplier: 1.5
   _slowMultiplier: 0.15
   _lookSpeed: 360
+  _fuzzySpeedRate: 1
 --- !u!114 &9010853105390204063
 MonoBehaviour:
   m_ObjectHideFlags: 0

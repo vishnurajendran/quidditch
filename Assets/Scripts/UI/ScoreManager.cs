@@ -60,6 +60,8 @@ namespace UI
                 _team1ScoreText.text = String.Format(scoreFormat, 1, _team1Score);
             else if (team == Team.Team_2)
                 _team2ScoreText.text = String.Format(scoreFormat, 2, _team2Score);
+
+            FuzzySystem.Instance.OnGameScoreChanged(_team1Score, _team2Score);
         }
         
     }

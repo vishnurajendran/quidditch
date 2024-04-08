@@ -19,12 +19,15 @@ namespace Agents
         [SerializeField] private float _boostMultiplier = 1.5f;
         [SerializeField] private float _slowMultiplier = 0.05f;
         [SerializeField] private float _lookSpeed;
+        [SerializeField] private float _fuzzySpeedRate = 1.0f;
         
         private Rigidbody _rb;
         private Vector3 _inputVec;
         private float _graphicRollDir;
         private bool _boosting;
         private bool _slowing;
+
+
         private void Start()
         {
             _rb = GetComponent<Rigidbody>();
@@ -37,8 +40,8 @@ namespace Agents
                 _rb.velocity = Vector3.zero;
                 _inputVec = Vector3.zero;
             }
-            
-            var maxSpeed = _moveSpeed * (_boosting ? _boostMultiplier : 1);
+
+            var maxSpeed = _moveSpeed * (_boosting ? _boostMultiplier : 1) * _fuzzySpeedRate;
             maxSpeed = maxSpeed * (_slowing ? _slowMultiplier : 1);
             _rb.velocity += _inputVec * (maxSpeed * Time.fixedDeltaTime);
             
@@ -76,6 +79,12 @@ namespace Agents
             var targetRot = Quaternion.Euler(roll);
             _graphicToRoll.transform.localRotation = Quaternion.Lerp( _graphicToRoll.transform.localRotation, targetRot,
                 Time.deltaTime*_graphicToRollLerpMult);
+        }
+
+        public void SetFuzzyRate(float rate)
+        {
+            Debug.Log("SetFuzzyRate:" + rate);
+            _fuzzySpeedRate = rate;
         }
 
         public void SetMoveSpeed(float velocity)

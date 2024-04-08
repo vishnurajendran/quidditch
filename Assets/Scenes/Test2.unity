@@ -2492,6 +2492,7 @@ GameObject:
   m_Component:
   - component: {fileID: 307971480}
   - component: {fileID: 307971481}
+  - component: {fileID: 307971482}
   m_Layer: 0
   m_Name: '--- GameManager --- '
   m_TagString: Untagged
@@ -2540,6 +2541,21 @@ MonoBehaviour:
   quaffle: {fileID: 0}
   Bludges: []
   goldenSnitch: {fileID: 0}
+--- !u!114 &307971482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307971479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81bad53fd1bdc754c835750fa1ee7640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyScores: 0
+  fiendScores: 0
+  fuzzyRate: 0
 --- !u!1001 &310835091
 PrefabInstance:
   m_ObjectHideFlags: 0
