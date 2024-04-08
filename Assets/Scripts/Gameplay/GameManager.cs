@@ -81,6 +81,7 @@ public class GameManager : SingletonBehaviour<GameManager>
         }
 
         OnTimerUpdate += OnTimerUpdated;
+        AudioManager.Instance.SetupMatchAudio();
     }
 
     private void OnTimerUpdated(TimeSpan span)
@@ -178,6 +179,7 @@ public class GameManager : SingletonBehaviour<GameManager>
         GameUI.Instance.ShowZoomingMessage(true, "START!", 0.75f/Time.timeScale);
         yield return new WaitForSeconds(1/Time.timeScale);
         GameUI.Instance.ShowZoomingMessage(false, "", 0);
+        AudioManager.Instance.PlayWhistle();
         GameStarted = true;
     }
     
@@ -187,8 +189,16 @@ public class GameManager : SingletonBehaviour<GameManager>
         {
             while (GameStarted)
             {
+                if (timerSeconds <= 0)
+                {
+                    GameStarted = false;
+                    AudioManager.Instance.PlayWhistle();
+                    Debug.Log("Game Over");
+                }
+                
                 if(timerSeconds == ((gameTimeMinutes*60)/2))
                 {
+                    AudioManager.Instance.PlayWhistle();
                     yield return StartCoroutine(HalfTime());
                 }
                 
@@ -220,6 +230,15 @@ public class GameManager : SingletonBehaviour<GameManager>
         ResetQuafflePosition();
         audienceManager.Celerbrate();
         GameUI.Instance.TeamScored(team);
+        AudioManager.Instance.PlayCheerOnGoal();
+        
+        AudioManager.Instance.PlayGoalSFX();
+        if(team == PlayerTeam)
+            AudioManager.Instance.PlayMyGoalVO();
+        else
+        {
+            AudioManager.Instance.PlayTheirGoalVO();
+        }
     }
 
     public void GiveQuaffleToChaser(Team team)

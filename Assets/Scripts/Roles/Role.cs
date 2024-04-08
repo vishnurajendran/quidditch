@@ -3,6 +3,7 @@ using Gameplay;
 using System.Collections.Generic;
 using Cinemachine;
 using Teams;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Role : MonoBehaviour
@@ -66,6 +67,8 @@ public class Role : MonoBehaviour
             GetComponent<AnimationController>().NormalState();
         }
 
+        if(IsPlayer())
+            AudioManager.Instance.HitByBludger();
     }
 
     public bool IsInDizzy()
@@ -173,6 +176,9 @@ public class Role : MonoBehaviour
     {
         Debug.Log("PassQuaffle:" + (selectedTarget != null));
 
+        if(selectedTarget == null)
+            return;
+        
         bool isTarget = selectedTarget.GetComponent<GoalDetector>() == null;
         if (selectedTarget != null)
         {
@@ -356,6 +362,8 @@ public class Role : MonoBehaviour
 
     private void UpdateTargetGUI()
     {
+        targetGUI.gameObject.SetActive(playerType != PlayerType.Beater);
+        
         Transform target=null;
         if (playerType == PlayerType.Seeker)
         {

@@ -17,7 +17,7 @@ public abstract class BaseBT : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (root != null)
+        if (root != null && GameManager.Instance.GameStarted)
         {
             root.Process();
         }

@@ -112,7 +112,7 @@ namespace Teams
 
         private void OnDestroy()
         {
-            TeamManager.RegisterToTeam(_team, transform);
+            TeamManager.DeRegisterFromTeam(_team, transform);
         }
     }
 }

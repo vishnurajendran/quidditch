@@ -23,12 +23,14 @@ namespace Teams
             _chasersByTeam = new Dictionary<Team, List<Transform>>();
             _beatersByTeam = new Dictionary<Team, List<Transform>>();
             _seekerByTeam = new Dictionary<Team, List<Transform>>();
+            _keeperByTeam = new Dictionary<Team, List<Transform>>();
             foreach (var team in (Team[])Enum.GetValues(typeof(Team)))
             {
                 _playersByTeam.Add(team, new List<Transform>());
                 _chasersByTeam.Add(team, new List<Transform>());
                 _beatersByTeam.Add(team, new List<Transform>());
                 _seekerByTeam.Add(team, new List<Transform>());
+                _keeperByTeam.Add(team, new List<Transform>());
             }
         }
 
