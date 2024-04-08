@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: body
-  m_Shader: {fileID: 4800000, guid: 96d05de60c5f7474491f9f94568cf623, type: 3}
+  m_Name: hair 1
+  m_Shader: {fileID: 4800000, guid: 235ca6f7bbc0ead4990f386a7ec24292, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -29,11 +29,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: f9c6074c5a78e71448f9efd3013cadda, type: 3}
+        m_Texture: {fileID: 2800000, guid: cbb65ec17f92eb44fb0dde6381b6a415, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMapSampler:
-        m_Texture: {fileID: 2800000, guid: 3a3c0acc807e9264ca0b32602a928a9a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9eea3b9b4b755f64da2c821145616f44, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RimLightSampler:
@@ -41,15 +41,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularReflectionSampler:
-        m_Texture: {fileID: 2800000, guid: 7ae1142e9b3a72048960dd9561e0e0d9, type: 3}
+        m_Texture: {fileID: 2800000, guid: c4271b2b1e8bfa949aa9230abaa7709e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _EdgeThickness: 0.5
-    - _FalloffPower: 0.3
+    - _FalloffPower: 0.5
     - _SpecularPower: 20
     m_Colors:
-    - _Color: {r: 0.73809385, g: 1, b: 0, a: 1}
+    - _Color: {r: 0.18191527, g: 0.22969285, b: 0.5283019, a: 1}
     - _ShadowColor: {r: 0.8, g: 0.8, b: 1, a: 1}
   m_BuildTextureStacks: []
