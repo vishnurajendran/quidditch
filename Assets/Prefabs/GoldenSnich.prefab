@@ -65,12 +65,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bcdea039ca628346b3191a99423922c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floorY: 2
-  ceilY: 300
+  floorY: 25
+  ceilY: 200
   _graphicToRoll: {fileID: 355953607130229088}
   _graphicToRollLerpMult: 3
   _maxRoll: 30
-  _moveSpeed: 100
+  _moveSpeed: 75
   _boostMultiplier: 1.5
   _slowMultiplier: 0.05
   _lookSpeed: 360

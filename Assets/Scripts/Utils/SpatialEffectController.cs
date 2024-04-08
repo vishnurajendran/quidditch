@@ -34,7 +34,6 @@ namespace Utils
             
             if (_userController != null && _userController.enabled)
             {
-                Debug.Log(speed);
                 var main = _particleSystem.main;
                 main.maxParticles = (int)(100 * speed / maxSpeed);
             }
