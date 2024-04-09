@@ -709,7 +709,7 @@ PrefabInstance:
       value: 'A course project for COMP6331
 
         <size=30>Vishnu Rajendran |
-        Yulin Alex</size>'
+        Yulin Zhang</size>'
       objectReference: {fileID: 0}
     - target: {fileID: 3647732150508885484, guid: 647270db56c167c41b7e31d74719941c, type: 3}
       propertyPath: m_AnchorMax.y
