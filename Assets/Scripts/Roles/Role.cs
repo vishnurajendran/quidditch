@@ -323,7 +323,7 @@ public class Role : MonoBehaviour
         
         
         //the player logic
-        if (playerType == PlayerType.Chaser)
+        if (playerType == PlayerType.Chaser || playerType == PlayerType.Keeper)
         {
             if (Input.GetKeyDown(KeyCode.F))
             {

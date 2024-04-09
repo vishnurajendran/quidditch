@@ -5,7 +5,6 @@ using Teams;
 using Unity.VisualScripting;
 using UnityEngine;
 using Utils;
-using static Unity.VisualScripting.LudiqRootObjectEditor;
 
 public class FuzzySystem : SingletonBehaviour<FuzzySystem>
 {
