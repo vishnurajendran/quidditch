@@ -366,7 +366,7 @@ public class Role : MonoBehaviour
             return;
         }
             
-        if (playerType == PlayerType.Chaser)
+        if (playerType == PlayerType.Chaser || playerType == PlayerType.Keeper)
         {
             if (cachedQuaffle == null)
             {
