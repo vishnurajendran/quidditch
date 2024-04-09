@@ -397,7 +397,8 @@ namespace BT
             List<Transform> targetTransforms = actor.GetComponent<CharacterSwitcher>().GetOtherTeamTargets();
             
             float throwRange = actor.GetComponent<Role>().throwRadius;
-            float distance = Vector3.Distance(targetTransforms[0].position, actor.transform.position);
+            int targetIndex = actor.GetComponent<Role>().currentTargetIndex;
+            float distance = Vector3.Distance(targetTransforms[targetIndex].position, actor.transform.position);
             if (distance > throwRange)
                 return NodeState.FAILURE;
             else
@@ -417,7 +418,8 @@ namespace BT
         public override NodeState Process()
         {
             List<Transform> targetTransforms = actor.GetComponent<CharacterSwitcher>().GetOtherTeamTargets();
-            actor.GetComponent<Role>().PassQuaffle(targetTransforms[0], true);
+            int targetIndex = actor.GetComponent<Role>().currentTargetIndex;
+            actor.GetComponent<Role>().PassQuaffle(targetTransforms[targetIndex], true);
             return NodeState.SUCCESS;
         }
     }
@@ -432,7 +434,8 @@ namespace BT
         public override NodeState Process()
         {
             List<Transform> targetTransforms = actor.GetComponent<CharacterSwitcher>().GetOtherTeamTargets();
-            Vector3 desiredVector = (targetTransforms[0].position - actor.transform.position).normalized;
+            int targetIndex = actor.GetComponent<Role>().currentTargetIndex;
+            Vector3 desiredVector = (targetTransforms[targetIndex].position - actor.transform.position).normalized;
             (actor as NPCController).AddKinematicVector(desiredVector);
             state = NodeState.RUNNING;
             return state;
@@ -681,12 +684,23 @@ namespace BT
         {
             Team myTeam = actor.GetComponent<TeamEntity>().MyTeam;
             List<Transform> targets = TeamManager.GetTargetsOfTeam(myTeam);
-            int index = targets.Count / 2;
+            int index = GameManager.Instance.quaffle.GetComponent<Quaffle>().takenChaser.GetComponent<Role>().currentTargetIndex;
             Transform curTransform = actor.GetComponent<Role>().focusChaser;
             Vector3 direction = curTransform.position - targets[index].position;
-            Vector3 target = direction * 0.3f + targets[index].position;
-            Vector3 desiredDir = (target - actor.transform.position).normalized;
-            (actor as NPCController).AddKinematicVector(desiredDir);
+            Vector3 target = targets[index].position + Vector3.up * 10.0f; // direction * 0.3f + targets[index].position + Vector3.up * direction.magnitude * 0.19f;
+
+            float distance = Vector3.Distance(actor.transform.position, target);
+            if(distance < 5.0f)
+            {
+                Vector3 quafflePosition = GameManager.Instance.quaffle.transform.position;
+                Vector3 facedTarget = (quafflePosition - actor.transform.position).normalized;
+                actor.transform.forward = facedTarget;
+            }
+            else
+            {
+                Vector3 desiredDir = (target - actor.transform.position).normalized;
+                (actor as NPCController).AddKinematicVector(desiredDir);
+            }
             state = NodeState.SUCCESS;
             return state;
         }

@@ -47,6 +47,7 @@ public class Role : MonoBehaviour
 
     public float curColdDownInDizziness = 0.0f;
     public float dissinessColdDownTime = 5.0f;
+    public int currentTargetIndex = 0;
 
 
     public Parabola throwIndicator;
@@ -269,6 +270,7 @@ public class Role : MonoBehaviour
         if (cachedQuaffle.GetComponent<Quaffle>().isCached) return;
         isCached = true;
         cachedQuaffle.GetComponent<Quaffle>().Cache(gameObject);
+        currentTargetIndex = Random.Range(0, 3);
         GetComponent<AnimationController>().CatchTheBall();
         GameObject tmpObj = GameObject.Instantiate(takeBallParticleEffect, cachedQuaffle.transform.position, new Quaternion());
         Destroy(tmpObj, 2.0f);
