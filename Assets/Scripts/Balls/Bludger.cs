@@ -37,9 +37,17 @@ public class Bludger : MonoBehaviour
 
     public bool IsThereHasNeedBeat(GameObject beaterNPC)
     {
+        if(previousBeater != null && previousBeater.GetComponent<TeamEntity>().MyTeam == beaterNPC.GetComponent<TeamEntity>().MyTeam)
+        {
+            return false;
+        }
+        return true;
+
+        /*
         if(previousBeater != null && previousBeater == beaterNPC) 
             return false;
         return true;
+        */
     }
     private Transform GetClosestPlayer()
     {

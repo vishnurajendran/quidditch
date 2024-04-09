@@ -100,7 +100,7 @@ namespace AgentControllers
             if (negativeZ > 0.0)
             {
                 float correctZ = GetInterpolationValue(negativeZ, takenForceRadius);
-                correctDirVect += new Vector3(0.0f, correctZ, 0.0f);
+                correctDirVect += new Vector3(0.0f, 0.0f, correctZ);
             }
 
 
@@ -113,6 +113,13 @@ namespace AgentControllers
             {
                 curDirection = (curDirection + correctDirVect).normalized;
             }
+
+            if(gameObject.tag == "Bludger")
+            {
+                Debug.Log("name:" + gameObject.name + " negativeY:" + negativeY + " positiveY:" + positiveY + 
+                    " curDirection:" + curDirection + "  correctDirVect:" + correctDirVect);
+            }
+
         }
 
 

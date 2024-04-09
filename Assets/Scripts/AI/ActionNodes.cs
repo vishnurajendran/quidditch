@@ -684,7 +684,9 @@ namespace BT
         {
             Team myTeam = actor.GetComponent<TeamEntity>().MyTeam;
             List<Transform> targets = TeamManager.GetTargetsOfTeam(myTeam);
-            int index = GameManager.Instance.quaffle.GetComponent<Quaffle>().takenChaser.GetComponent<Role>().currentTargetIndex;
+            int index = 1;
+            if(GameManager.Instance.quaffle.GetComponent<Quaffle>().takenChaser != null)
+                index = GameManager.Instance.quaffle.GetComponent<Quaffle>().takenChaser.GetComponent<Role>().currentTargetIndex;
             Transform curTransform = actor.GetComponent<Role>().focusChaser;
             Vector3 direction = curTransform.position - targets[index].position;
             Vector3 target = targets[index].position + Vector3.up * 10.0f; // direction * 0.3f + targets[index].position + Vector3.up * direction.magnitude * 0.19f;

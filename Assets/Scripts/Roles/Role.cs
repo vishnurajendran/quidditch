@@ -101,6 +101,7 @@ public class Role : MonoBehaviour
 
     private void PerceptBludger()
     {
+        focusBludger = null;
         float minDistance = perceptionRange;
         for(int i =0;  i < GameManager.Instance.Bludges.Count; ++i)
         {
@@ -114,8 +115,6 @@ public class Role : MonoBehaviour
                 focusBludger = GameManager.Instance.Bludges[i];
             }
         }
-        if (minDistance == perceptionRange)
-            focusBludger = null;
     }
 
     private void InitialFriendsInformation()

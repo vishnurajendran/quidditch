@@ -884,7 +884,7 @@ MonoBehaviour:
   friendBeater: []
   focusBludger: {fileID: 0}
   perceptionRange: 100
-  beatRange: 3
+  beatRange: 5
   guardeRadius: 35
   beatStrength: 80
   cachedGoldenSnitch: {fileID: 0}
@@ -903,6 +903,7 @@ MonoBehaviour:
   beatBallParticleEffect: {fileID: 7634420434017284396, guid: b9ed127bfed05be4db493ca51e744a76, type: 3}
   curColdDownInDizziness: 0
   dissinessColdDownTime: 5
+  currentTargetIndex: 0
   throwIndicator: {fileID: 0}
 --- !u!114 &2098546418
 MonoBehaviour:
@@ -1816,14 +1817,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5808982429615006612}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
+  m_LocalPosition: {x: 0, y: 0.64, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3198186520215861701}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
 --- !u!33 &5544566305800087332
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1843,7 +1844,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 2, z: 2}
+  m_Size: {x: 1, y: 3, z: 1}
   m_Center: {x: 0, y: 0, z: 0.00000035762787}
 --- !u!1 &5948735606494975934
 GameObject:
