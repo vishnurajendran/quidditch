@@ -38,9 +38,9 @@ namespace Gameplay
         [SerializeField] private AudioSource _ambianceSource;
         [SerializeField] private AudioMixer _mixer;
 
-        private float _masterLevel;
-        private float _sfxAudioLevel;
-        private float _voAudioLevel;
+        private float _masterLevel=1;
+        private float _sfxAudioLevel=1;
+        private float _voAudioLevel=1;
 
         public float SFXAudioLevel => _sfxAudioLevel;
         

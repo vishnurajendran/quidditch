@@ -16,6 +16,12 @@ public enum QuaffleState
     CachedByTeam2,
 }
 
+public enum GameOverType
+{
+    TIME_UP,
+    SNITCH_CAUGHT
+}
+
 public class GameManager : SingletonBehaviour<GameManager>
 {
     [SerializeField]
@@ -56,7 +62,7 @@ public class GameManager : SingletonBehaviour<GameManager>
     public Action<TimeSpan> OnTimerUpdate;
     public Action OnTeamsAssigned;
     public Action OnHalfTime;
-    public Action OnGameOver;
+    public Action<GameOverType> OnGameOver;
 
     private bool _halftimeDone = false;
     private bool _canPause = true;
@@ -220,7 +226,7 @@ public class GameManager : SingletonBehaviour<GameManager>
                     GameStarted = false;
                     AudioManager.Instance.PlayWhistle();
                     Debug.Log("Game Over");
-                    GameOver();
+                    GameOver(GameOverType.TIME_UP);
                     yield break;
                 }
                 if(timerSeconds == ((gameTimeMinutes*60)/2) && !_halftimeDone)
@@ -264,7 +270,7 @@ public class GameManager : SingletonBehaviour<GameManager>
         AudioManager.Instance.PlayCheerOnGoal();
         AudioManager.Instance.PlayGoalSFX();
 
-        var rand = Random.Range(0, 100);
+        var rand = Random.Range(0, 10);
         if(rand%2 == 0)
             return;
         if(team == PlayerTeam)
@@ -301,22 +307,23 @@ public class GameManager : SingletonBehaviour<GameManager>
     {
         OnGoldenSnitchScored?.Invoke(team);
         audienceManager.Celerbrate();
-        GameOver();
+        GameOver(GameOverType.SNITCH_CAUGHT);
     }
 
-    private void GameOver()
+    private void GameOver(GameOverType type)
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         _canPause = false;
         GameStarted = false;
         AudioManager.Instance.PlayWhistle();
-        StartCoroutine(DelayedGameOver());
+        StartCoroutine(DelayedGameOver(type));
     }
 
-    IEnumerator DelayedGameOver()
+    IEnumerator DelayedGameOver(GameOverType type)
     {
         yield return new WaitForSeconds(1);
-        OnGameOver?.Invoke();
+        OnGameOver?.Invoke(type);
     }
 }
+

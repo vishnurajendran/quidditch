@@ -2553,9 +2553,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81bad53fd1bdc754c835750fa1ee7640, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyScores: 0
-  fiendScores: 0
-  fuzzyRate: 0
+  Team1Scores: 0
+  Team2Scores: 0
+  Team1fuzzyRate: 1
+  Team2fuzzyRate: 1
 --- !u!1001 &310835091
 PrefabInstance:
   m_ObjectHideFlags: 0

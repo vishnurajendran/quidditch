@@ -61,7 +61,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d3f7efc98be726446b44d0a99a82c5c0, type: 3}
   theirGoalVo:
   - {fileID: 8300000, guid: 7b2b91f93d45623428a4e689a21b9f29, type: 3}
-  - {fileID: 8300000, guid: 9f9734b91ce3adb4eac4c067ad2f9dac, type: 3}
   - {fileID: 8300000, guid: 661d5bd8b7338d442b9ee8cf6c2aa42b, type: 3}
   - {fileID: 8300000, guid: a7c686890b81aa94faf766a828cfc5e1, type: 3}
   winVo:

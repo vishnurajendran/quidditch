@@ -114,11 +114,13 @@ namespace AgentControllers
                 curDirection = (curDirection + correctDirVect).normalized;
             }
 
+            /*
             if(gameObject.tag == "Bludger")
             {
                 Debug.Log("name:" + gameObject.name + " negativeY:" + negativeY + " positiveY:" + positiveY + 
                     " curDirection:" + curDirection + "  correctDirVect:" + correctDirVect);
             }
+            */
 
         }
 

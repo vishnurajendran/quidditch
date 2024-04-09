@@ -3,11 +3,14 @@ using Gameplay;
 using System.Collections.Generic;
 using Cinemachine;
 using Teams;
+using UI;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class Role : MonoBehaviour
 {
+    private const float MIN_DIST_FOR_GOAL = 120;
+    
     //Parameters for chaser
     [SerializeField] public float throwRadius = 30.0f;
     [SerializeField] public float attackCircleRadius = 15.0f;
@@ -192,7 +195,8 @@ public class Role : MonoBehaviour
             return;
         
         bool isTarget = selectedTarget.GetComponent<GoalDetector>() == null;
-        if (selectedTarget != null)
+        //added an additional check for distance here
+        if (selectedTarget != null && Vector3.Distance(transform.position, selectedTarget.position) <= MIN_DIST_FOR_GOAL)
         {
             PassQuaffle(selectedTarget, isTarget);
         }
@@ -285,20 +289,7 @@ public class Role : MonoBehaviour
         GameObject tmpObj = Instantiate(takeBallParticleEffect, cachedGoldenSnitch.transform.position, new Quaternion());
         Destroy(tmpObj, 2.0f);
     }
-
-    private void ToggleQuaffleTarget()
-    {
-        var go = GameManager.Instance.quaffle;
-        var cgt = FindObjectOfType<CinemachineTargetGroup>();
-        if (cgt.m_Targets[1].target == null)
-        {
-            cgt.m_Targets[1].target = go.transform;
-        }
-        else
-        {
-            cgt.m_Targets[1].target = null;
-        }
-    }
+    
     
     // Update is called once per frame
     void Update()
@@ -318,9 +309,6 @@ public class Role : MonoBehaviour
         PerceptChaserWithQuaffle();
 
         if (!IsPlayer()) return;
-
-        UpdateTargetGUI();
-        
         
         //the player logic
         if (playerType == PlayerType.Chaser)
@@ -336,11 +324,6 @@ public class Role : MonoBehaviour
                 {
                     PassQuaffleByAnimation();
                 }
-            }
-
-            if (Input.GetKeyDown(KeyCode.CapsLock))
-            {
-                ToggleQuaffleTarget();
             }
         }
 
@@ -370,9 +353,99 @@ public class Role : MonoBehaviour
                 }
             }
         }
-
+        
+        ShowHelpGUI();
+        UpdateTargetGUI();
     }
 
+    private void ShowHelpGUI()
+    {
+        if (!GameManager.Instance.GameStarted)
+        {
+            GameUI.Instance.ShowHelpUI(false, "");
+            return;
+        }
+            
+        if (playerType == PlayerType.Chaser)
+        {
+            if (cachedQuaffle == null)
+            {
+                GameUI.Instance.ShowHelpUI(false, "");
+                return;
+            }
+
+            if (!isCached)
+            {
+                GameUI.Instance.ShowHelpUI(true, "F to Take Quaffle");
+                return;
+            }
+
+            var quaffle = cachedQuaffle.GetComponent<Quaffle>();
+            if (quaffle.takenChaser != null && quaffle.takenChaser != gameObject)
+            {
+                GameUI.Instance.ShowHelpUI(false, "");
+                return;
+            }
+            
+            if (Vector3.Distance(cachedQuaffle.transform.position, transform.position) <= 0.75f)
+            {
+                GameUI.Instance.ShowHelpUI(true, "F to Take Quaffle");
+                return;
+            }
+            
+            var target = GetComponent<CharacterSwitcher>().selected;
+            if (target == null)
+            {
+                GameUI.Instance.ShowHelpUI(false, "");
+                return;
+            }
+
+            var isGoal = target.GetComponent<GoalDetector>() != null;
+            if (isGoal && Vector3.Distance(transform.position, target.position) <= MIN_DIST_FOR_GOAL)
+            {
+                GameUI.Instance.ShowHelpUI(true, "F to Goal!");
+                return;
+            }
+
+            var teamE = target.GetComponent<TeamEntity>();
+            if (teamE == null)
+            {
+                GameUI.Instance.ShowHelpUI(false, "");
+                return;
+            }
+            
+            var isSelectedTargetChaser = target.GetComponent<TeamEntity>().MyPlayerType == PlayerType.Chaser;
+            if(isSelectedTargetChaser)
+            {
+                GameUI.Instance.ShowHelpUI(true, "F to Pass!");
+                return;
+            }
+            
+            GameUI.Instance.ShowHelpUI(false, "");
+        }
+        else if (playerType == PlayerType.Seeker)
+        {
+            if (cachedGoldenSnitch != null)
+            {
+                GameUI.Instance.ShowHelpUI(true, "F to Catch!");
+            }
+        }
+        else if (playerType == PlayerType.Beater)
+        {
+            if (!IsBeatAvailable())
+            {
+                GameUI.Instance.ShowHelpUI(false, "");
+                return;
+            }
+            
+            GameUI.Instance.ShowHelpUI(true, "F to Beat Bludger!");
+        }
+        else
+        {
+            GameUI.Instance.ShowHelpUI(false, "");
+        }
+    }
+    
     private void UpdateTargetGUI()
     {
         targetGUI.gameObject.SetActive(playerType != PlayerType.Beater);

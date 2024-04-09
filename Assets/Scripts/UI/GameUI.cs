@@ -36,8 +36,13 @@ namespace UI
         [SerializeField] private GameObject winScoreText;
         [SerializeField] private GameObject loseScoreText;
         [SerializeField] private Button skipBttn;
-
+        [SerializeField] private GameObject snitchText;
+        [SerializeField] private GameObject timeupText;
+        
         [SerializeField] private GameObject pauseMenu;
+        
+        [SerializeField] private GameObject helpGameObject;
+        [SerializeField] private TMP_Text helpText;
         
         private Transform _followTarget;
         private Camera _camera;
@@ -73,7 +78,7 @@ namespace UI
             GameManager.Instance.OnGameOver -= OnGameOver;
         }
 
-        private void OnGameOver()
+        private void OnGameOver(GameOverType type)
         {
             var score1 = scoreManager.Team1Score;
             var score2 = scoreManager.Team2Score;
@@ -101,6 +106,16 @@ namespace UI
             }
 
             ShowScoreText(team1ScoreTextRef, score1, team2ScoreTextRef, score2);
+
+            switch (type)
+            {
+                case GameOverType.TIME_UP:
+                    timeupText.SetActive(true);
+                    break;
+                case GameOverType.SNITCH_CAUGHT:
+                    snitchText.SetActive(true);
+                    break;
+            }
         }
 
         private void ShowScoreText(GameObject score1TxtObj, int score1, GameObject score2TxtObj, int score2)
@@ -237,6 +252,12 @@ namespace UI
             {
                 SceneLoader.Instance.LoadMainMenu();
             });
+        }
+
+        public void ShowHelpUI(bool show, string text)
+        {
+            helpGameObject.SetActive(show);
+            helpText.text = text;
         }
     }
 }
